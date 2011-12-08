@@ -1,0 +1,13 @@
+E:\IGame\Hacker's World\Hacker's World\obj\x86\Debug\Hacker's World.exe
+E:\IGame\Hacker's World\Hacker's World\obj\x86\Debug\Hacker's World.pdb
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\Hacker's World.exe
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\Hacker's World.pdb
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\HWEngine.dll
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.Compatibility.dll
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.dll
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.GLControl.dll
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\HWEngine.pdb
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.xml
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.Compatibility.xml
+E:\IGame\Hacker's World\Hacker's World\bin\Debug\OpenTK.GLControl.xml
+E:\IGame\Hacker's World\Hacker's World\obj\x86\Debug\ResolveAssemblyReference.cache

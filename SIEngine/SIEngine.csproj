@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B0AF0493-3558-48A1-A9AC-68BC1F85AA52}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SIEngine</RootNamespace>
+    <AssemblyName>SIEngine</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base Geometry\Normal.cs" />
+    <Compile Include="Graphics\GeneralGraphics.cs" />
+    <Compile Include="Graphics\Light.cs" />
+    <Compile Include="Graphics\Skybox.cs" />
+    <Compile Include="GUI\ButtonEffects.cs" />
+    <Compile Include="GUI\Label.cs" />
+    <Compile Include="GUI\Object.cs" />
+    <Compile Include="Base Geometry\TextureCoordinate.cs" />
+    <Compile Include="Base Geometry\Vector.cs" />
+    <Compile Include="Base Geometry\Vertex.cs" />
+    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\OBJModel.cs" />
+    <Compile Include="Graphics\Texture.cs" />
+    <Compile Include="GUI\Button.cs" />
+    <Compile Include="GUI\GUIObject.cs" />
+    <Compile Include="GUI\Polygon.cs" />
+    <Compile Include="GUI\TextBox.cs" />
+    <Compile Include="GUI\TextPrinter.cs" />
+    <Compile Include="GUI\Windows.cs" />
+    <Compile Include="Other\Extension Methods.cs" />
+    <Compile Include="Other\GameConstants.cs" />
+    <Compile Include="Other\GeometryMath.cs" />
+    <Compile Include="Other\Other.cs" />
+    <Compile Include="Physics\Gravity.cs" />
+    <Compile Include="Physics\Particle.cs" />
+    <Compile Include="Physics\PhysicsObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
