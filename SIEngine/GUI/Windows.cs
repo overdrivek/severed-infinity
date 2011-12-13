@@ -15,7 +15,7 @@ namespace SIEngine
 {
     namespace GUI
     {
-        public class Window : GameWindow
+        public abstract class Window : GameWindow
         {
             public Color BackgroundColor
             {
@@ -72,9 +72,22 @@ namespace SIEngine
                 GL.Viewport(0, 0, this.Width, this.Height);
             }
 
+            #region Management
+            public void AddChildren(params GUIObject[] children)
+            {
+                foreach (GUIObject child in children)
+                    Children.Add(child);
+            }
+            public void Add3DChildren(params Object[] children)
+            {
+                foreach (Object child in children)
+                    Children3D.Add(child);
+            }
+            #endregion
+
             #region input
 
-            private void OnMouseMove (object sender, MouseEventArgs evArgs)
+            protected virtual void OnMouseMove(object sender, MouseEventArgs evArgs)
             {
                 foreach (GUIObject child in this.Children)
                 {
@@ -82,7 +95,7 @@ namespace SIEngine
                 }
             }
 
-            private void OnMouseUp(object sender, MouseEventArgs evArgs)
+            protected virtual void OnMouseUp(object sender, MouseEventArgs evArgs)
             {
                 foreach (GUIObject child in this.Children)
                 {
@@ -90,7 +103,7 @@ namespace SIEngine
                 }
             }
 
-            private void OnMouseClick (object sender, MouseEventArgs evArgs)
+            protected virtual void OnMouseClick(object sender, MouseEventArgs evArgs)
             {
                 foreach (GUIObject child in this.Children)
                 {
@@ -98,7 +111,7 @@ namespace SIEngine
                 }
             }
 
-            protected void OnKeyPress (KeyboardKeyEventArgs evArgs)
+            protected virtual void OnKeyPress(KeyboardKeyEventArgs evArgs)
             {
                 foreach (GUIObject child in this.Children)
                 {
@@ -134,8 +147,12 @@ namespace SIEngine
                     child.Draw();
                 }
 
+                Draw();
+
                 SwapBuffers();
             }
+
+            protected abstract void Draw();
 
         }
     }

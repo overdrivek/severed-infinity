@@ -36,8 +36,8 @@ namespace SIEngine.Graphics
             GeneralGraphics.EnableTexturing();
             GL.PushMatrix();
             {
-                GL.Translate(0.0f, 50.0f, -Camera.Zoom);
-                GL.Scale(900.0f, 900.0f, 900.0f);
+                GL.Translate(0.0f, 00.0f, -Camera.Zoom);
+                GL.Scale(100.0f, 100.0f, 100.0f);
                 GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
                 GL.Color3(Color.White);
 
