@@ -60,7 +60,7 @@ namespace SIEngine
                 Size = new Vector(150, 20);
             }
 
-            public void CallEvent(EventType type, Vector position, Key? argument)
+            public void CallEvent(EventType type, Vector position, Key? argument, params object[] a)
             {
                 if (Location == null || !Visible)
                     return;
