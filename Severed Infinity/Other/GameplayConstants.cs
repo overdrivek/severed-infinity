@@ -8,6 +8,5 @@ namespace SI.Other
     public static class GameplayConstants
     {
         public const string WindowName = "Severed Infinity";
-        
     }
 }

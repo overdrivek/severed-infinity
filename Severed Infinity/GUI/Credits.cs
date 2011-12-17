@@ -6,6 +6,7 @@ using SIEngine;
 using SIEngine.GUI;
 using SIEngine.BaseGeometry;
 using SIEngine.Graphics;
+using SIEngine.Logging;
 
 namespace SI.GUI
 {
@@ -51,6 +52,8 @@ namespace SI.GUI
 
             Initialize();
             ParentMenu.ParentWindow.AddChildren(this, back);
+
+            LogManager.WriteInfo("Created credits menu.");
         }
 
         private void Initialize()
