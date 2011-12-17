@@ -143,22 +143,20 @@ namespace SIEngine
             {
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-                Camera.CurrentMode = Camera.CameraMode.Overview;
+                Camera.CurrentMode = Camera.CameraMode.OrthographicOverview;
                 Camera.DoCameraTransformation(this);
 
                 foreach (Object child in this.Children3D)
                     if(child.Visible)
                         child.Draw();
+
+                Camera.CurrentMode = Camera.CameraMode.Overview;
+                Camera.DoCameraTransformation(this);
+
                 foreach (GUIObject control3d in this.Controls3D)
                     if(control3d.Visible)
                         control3d.Draw();
 
-                Camera.CurrentMode = Camera.CameraMode.OrthographicOverview;
-                Camera.DoCameraTransformation(this);
-                foreach (GUIObject child in this.Children)
-                {
-                    child.Draw();
-                }
 
                 Draw();
 
