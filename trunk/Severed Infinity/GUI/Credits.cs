@@ -14,14 +14,27 @@ namespace SI.GUI
         private Label credit;
         private Button back;
         private MainMenu ParentMenu { get; set; }
-        public bool Visible { get; set; }
+        public bool Visible
+        { 
+            set
+            {
+                base.Visible = value;
+                back.Visible = value;
+
+                if (value)
+                    Initialize();
+            }
+            get
+            {
+                return base.Visible;
+            }
+        }
 
         public Credits(MainMenu parent)
         {
             ParentMenu = parent;
 
             credit = new Label();
-            credit.Location = new Vector(700, ParentMenu.ParentWindow.Size.Height - 50);
             credit.Text = "     Credits \n\nProgrammers \n   Traiko Dinev \n\nGame Designer"+
                 "\n   Traiko Dinev \n\nLead Programmer \n   Traiko Dinev";
 
@@ -29,10 +42,21 @@ namespace SI.GUI
             back.ApplyStylishEffect();
             back.Image = "data/img/bck.bmp";
             back.Text = "Return";
-            back.Location = new Vector(340, ParentMenu.ParentWindow.Size.Height + 130);
             back.Size.X = 80;
+            back.MouseClick += () =>
+                {
+                    Visible = false;
+                };
+            Visible = false;
 
+            Initialize();
             ParentMenu.ParentWindow.AddChildren(this, back);
+        }
+
+        private void Initialize()
+        {
+            back.Location = new Vector(340, ParentMenu.ParentWindow.Size.Height + 130);
+            credit.Location = new Vector(700, ParentMenu.ParentWindow.Size.Height - 50);
         }
 
         public override void Draw()

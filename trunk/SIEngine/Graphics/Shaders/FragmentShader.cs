@@ -26,8 +26,8 @@ namespace SIEngine.Graphics.Shaders
         {
             Type = ShaderType.FragmentShader;
             Shader = GL.CreateShader(Type);
+            Console.WriteLine("fs error:" + GL.GetError());
             LoadAndCompileShader(path);
-            Console.WriteLine(GL.GetError());
         }
     }
 }
