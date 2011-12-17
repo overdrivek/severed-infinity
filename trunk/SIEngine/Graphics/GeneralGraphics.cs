@@ -12,6 +12,11 @@ namespace SIEngine.Graphics
 {
     public static class GeneralGraphics
     {
+        public static void UseDefaultShaderProgram()
+        {
+            GL.UseProgram(0);
+        }
+
         public static void EnableAlphaBlending()
         {
             GL.Enable(EnableCap.Blend);

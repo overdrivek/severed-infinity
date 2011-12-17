@@ -73,5 +73,12 @@ namespace SI.GUI
             settings.Visible = visible;
             about.Visible = visible;
         }
+
+        #region animation and effects
+        private void EnterAnimation(int frame)
+        {
+
+        }
+        #endregion
     }
 }

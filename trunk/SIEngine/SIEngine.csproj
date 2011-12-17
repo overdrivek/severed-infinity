@@ -49,6 +49,10 @@
     <Compile Include="Base Geometry\Normal.cs" />
     <Compile Include="Graphics\GeneralGraphics.cs" />
     <Compile Include="Graphics\Light.cs" />
+    <Compile Include="Graphics\Shaders\AbstractShader.cs" />
+    <Compile Include="Graphics\Shaders\FragmentShader.cs" />
+    <Compile Include="Graphics\Shaders\ShaderProgram.cs" />
+    <Compile Include="Graphics\Shaders\VertexShader.cs" />
     <Compile Include="Graphics\Skybox.cs" />
     <Compile Include="GUI\ButtonEffects.cs" />
     <Compile Include="GUI\Label.cs" />

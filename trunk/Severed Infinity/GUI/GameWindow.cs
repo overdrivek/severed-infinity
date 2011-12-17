@@ -11,14 +11,20 @@ using System.Text;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SI.GUI;
+using SI.Properties;
+using SI.Other;
 
 namespace SI
 {
     public class GameWindow : Window
     {
         public MainMenu Menu { get; set; }
-        public GameWindow(int width, int height, string title) : base(width, height, title)
+
+        public GameWindow()
         {
+            int width = Settings.Default.ResolutionX;
+            int height = Settings.Default.ResolutionY;
+            Initialize(width, height, GameplayConstants.WindowName);
         }
 
         protected override void Draw()
