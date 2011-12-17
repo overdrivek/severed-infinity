@@ -25,12 +25,14 @@ namespace SI
     {
         static void Main (string[] Args)
         {
-            GameWindow window = new GameWindow(800, 600, "Demo");
+            GameWindow window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -350.0f;
+            var bwe = new SI.Effects.ButtonWobbleEffect(new Button());
             window.Menu = new MainMenu(window);
 
             window.Run(30);
         }
+
     }
 }

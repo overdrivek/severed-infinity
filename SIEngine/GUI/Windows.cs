@@ -38,14 +38,27 @@ namespace SIEngine
                 Quit = 6
             }
 
-            public Window (int width, int height, string title) : base (width, height)
+            public Window()
             {
+                //do nothing
+            }
+
+            public Window (int width, int height, string title)
+            {
+                Initialize(width, height, title);
+            }
+
+            public void Initialize(int width, int height, string title)
+            {
+                this.Width = width;
+                this.Height = height;
+
                 this.Title = title;
                 Children = new List<GUIObject>();
                 Children3D = new List<Object>();
                 Controls3D = new List<GUIObject>();
                 this.BackgroundColor = Color.Black;
-                
+
                 this.Mouse.ButtonUp += OnMouseUp;
                 this.Mouse.Move += OnMouseMove;
                 this.Keyboard.KeyDown += (o, e) =>

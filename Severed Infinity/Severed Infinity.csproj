@@ -39,10 +39,17 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Effects\ButtonWobbleEffect.cs" />
     <Compile Include="GUI\Credits.cs" />
     <Compile Include="GUI\GameWindow.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GUI\MainMenu.cs" />
+    <Compile Include="Other\GameplayConstants.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
@@ -58,6 +65,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Effects\WobbleFragment.frag" />
+    <None Include="Effects\WobbleVertex.vert" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SIEngine\SIEngine.csproj">
