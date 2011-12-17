@@ -13,6 +13,7 @@ using OpenTK.Graphics.OpenGL;
 using SI.GUI;
 using SI.Properties;
 using SI.Other;
+using SIEngine.Logging;
 
 namespace SI
 {
@@ -25,6 +26,8 @@ namespace SI
             int width = Settings.Default.ResolutionX;
             int height = Settings.Default.ResolutionY;
             Initialize(width, height, GameplayConstants.WindowName);
+
+            LogManager.WriteInfo("Main window created successfully.");
         }
 
         protected override void Draw()

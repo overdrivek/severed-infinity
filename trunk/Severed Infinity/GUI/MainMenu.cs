@@ -6,6 +6,7 @@ using SIEngine;
 using SIEngine.GUI;
 using SIEngine.BaseGeometry;
 using SIEngine.Graphics;
+using SIEngine.Logging;
 
 namespace SI.GUI
 {
@@ -64,6 +65,8 @@ namespace SI.GUI
             credits = new Credits(this);
 
             ParentWindow.AddChildren(play, settings, about, quit, credits);
+
+            LogManager.WriteInfo("Main menu created.");
         }
 
         public void RenderVisibility(bool visible)

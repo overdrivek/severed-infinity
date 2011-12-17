@@ -26,7 +26,6 @@ namespace SIEngine.Graphics.Shaders
         {
             Type = ShaderType.VertexShader;
             Shader = GL.CreateShader(Type);
-            Console.WriteLine("vs error:" + GL.GetError());
             LoadAndCompileShader(path);   
         }
     }

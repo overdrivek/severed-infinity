@@ -9,6 +9,7 @@ using SIEngine.Other;
 using SIEngine.Graphics;
 using SIEngine.BaseGeometry;
 using System.IO;
+using SIEngine.Logging;
 
 namespace SIEngine.Graphics.Shaders
 {
@@ -28,6 +29,12 @@ namespace SIEngine.Graphics.Shaders
             if (Shader == -1)
                 return;
 
+            if (!File.Exists(path))
+            {
+                LogManager.WriteError("Cannot open shader at:" + path);
+                return;
+            }
+
             StreamReader reader = new StreamReader(path);
             string @data = reader.ReadToEnd();
             CompileShader(@data);
@@ -38,13 +45,15 @@ namespace SIEngine.Graphics.Shaders
         public void CompileShader(string @data)
         {
             GL.ShaderSource(Shader, @data);
-            ErrorCode error = GL.GetError();
-            if (error != ErrorCode.NoError)
-                throw new Exception(error + GL.GetShaderInfoLog(Shader));
+            int compiled;
             GL.CompileShader(Shader);
-            error = GL.GetError();
-            if (error != ErrorCode.NoError)
-                throw new Exception(error + GL.GetShaderInfoLog(Shader));
+
+            GL.GetShader(Shader, ShaderParameter.CompileStatus, out compiled);
+            if (compiled == 0)
+            {
+                LogManager.WriteError("Cannot compile shader");
+                LogManager.WriteError("\t Error message:" + GL.GetShaderInfoLog(Shader));
+            }
         }
         #endregion
     }

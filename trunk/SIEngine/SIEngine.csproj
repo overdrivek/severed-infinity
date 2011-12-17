@@ -69,6 +69,7 @@
     <Compile Include="GUI\TextBox.cs" />
     <Compile Include="GUI\TextPrinter.cs" />
     <Compile Include="GUI\Windows.cs" />
+    <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Other\Extension Methods.cs" />
     <Compile Include="Other\GameConstants.cs" />
     <Compile Include="Other\GeometryMath.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Physics\PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

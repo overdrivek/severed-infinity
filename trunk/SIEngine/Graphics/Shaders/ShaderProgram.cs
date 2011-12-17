@@ -28,8 +28,6 @@ namespace SIEngine.Graphics.Shaders
             AttachShader(new VertexShader(vertexShader));
             AttachShader(new FragmentShader(fragmentShader));
             LinkProgram();
-
-            Console.WriteLine("shader program error:" + GL.GetError());
         }
         public ShaderProgram(VertexShader vShader, FragmentShader fShader)
         {
@@ -57,9 +55,7 @@ namespace SIEngine.Graphics.Shaders
         }
         public void UseProgram()
         {
-            Console.WriteLine("before use error:" + GL.GetError());
             GL.UseProgram(Program);
-            Console.WriteLine("use error:" + GL.GetError() + Program.ToString());
         }
         public void LinkAndUseProgram()
         {
