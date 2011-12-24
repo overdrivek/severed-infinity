@@ -106,5 +106,11 @@ namespace SIEngine.Graphics.Shaders
             int loc = GL.GetUniformLocation(Program, name);
             GL.Uniform1(loc, value);
         }
+
+        public void WriteSampler(string name, Texture sampler)
+        {
+            int loc = GL.GetUniformLocation(Program, name);
+            GL.Uniform1(loc, sampler.Location);
+        }
     }
 }

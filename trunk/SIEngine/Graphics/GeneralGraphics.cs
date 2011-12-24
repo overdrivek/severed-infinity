@@ -7,11 +7,23 @@ using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using SIEngine.Other;
 using SIEngine.BaseGeometry;
+using SIEngine.Graphics.Shaders;
 
 namespace SIEngine.Graphics
 {
     public static class GeneralGraphics
     {
+        public static float ShadeLight = 128.0f;
+        public static float Angle = 0.0f;
+        public static float AmbientLight = 32;
+        public static ShaderProgram SimulatedLighting = new ShaderProgram("data/effects/SimulatedLighting.vert",
+            "data/effects/SimulatedLighting.frag");
+        
+        public static void UseSimulatedLighting()
+        {
+            SimulatedLighting.UseProgram();
+        }
+
         public static void UseDefaultShaderProgram()
         {
             GL.UseProgram(0);
@@ -44,21 +56,30 @@ namespace SIEngine.Graphics
             GL.Disable(EnableCap.Texture2D);
         }
 
+        public static void DrawFilled()
+        {
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+        }
+        public static void DrawWireframe()
+        {
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+        }
+
         public static void DrawRectangle(BaseGeometry.Vector Position, BaseGeometry.Vector Size)
         {
             GL.Begin(BeginMode.Quads);
             {
                 GL.TexCoord2(0, 0);
-                GL.Vertex2(Position.X, Position.Y);
+                GL.Vertex3(Position.X, Position.Y, Position.Z);
 
                 GL.TexCoord2(0, 1);
-                GL.Vertex2(Position.X, Position.Y + Size.Y);
+                GL.Vertex3(Position.X, Position.Y + Size.Y, Position.Z);
 
                 GL.TexCoord2(1, 1);
-                GL.Vertex2(Position.X + Size.X, Position.Y + Size.Y);
+                GL.Vertex3(Position.X + Size.X, Position.Y + Size.Y, Position.Z);
 
                 GL.TexCoord2(1, 0);
-                GL.Vertex2(Position.X + Size.X, Position.Y);
+                GL.Vertex3(Position.X + Size.X, Position.Y, Position.Z);
             }
             GL.End();
         }

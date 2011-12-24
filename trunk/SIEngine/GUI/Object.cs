@@ -11,10 +11,12 @@ namespace SIEngine.GUI
     public class Object : GUIObject
     {
         public OBJModel Body { get; set; }
-        public Vector Location { get; set; }
         
         public override void Draw ()
         {
+            if (!Visible)
+                return;
+
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {

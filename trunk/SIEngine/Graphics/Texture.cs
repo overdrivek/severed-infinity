@@ -103,7 +103,7 @@ namespace SIEngine
             /// <param name="path">The path of the image.</param>
             public void LoadTextureFromFile (string path)
             {
-                try
+                //try
                 {
                     switch (Path.GetExtension(path))
                     {
@@ -113,12 +113,13 @@ namespace SIEngine
                         case ".jpg":
                         case ".JPG":
                         case ".png":
-                            LoadImageJPG(path);
+                        case ".PNG":
+                            LoadImageUniversal(path);
                             //LoadImageTarga(path);
                             break;
                     }
                 }
-                catch (Exception exc)
+                //catch (Exception exc)
                 {
 
                 }
@@ -143,13 +144,22 @@ namespace SIEngine
                 GC.Collect();
             }
 
-            public void LoadImageJPG (string path)
+            public void LoadImageUniversal (string path)
             {
-                Image image = Image.FromFile(path);
-                image.RotateFlip(RotateFlipType.RotateNoneFlipY);
-                path = Path.ChangeExtension(path, ".bmp");
-                image.Save(path, ImageFormat.Bmp);
-                image = null;
+                FileStream stream = File.OpenRead(path);
+                Image image = Image.FromStream(stream, false);
+                Bitmap bmp = new Bitmap(image);
+
+                BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
+                    ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                this.Size = new Vector(bmp.Width, bmp.Height);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, bmp.Width, bmp.Height,
+                        0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                bmp.UnlockBits(data);
+                bmp = null;
+
+                GC.Collect();
                 LoadImageBMP(path);
             }
 

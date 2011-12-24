@@ -32,6 +32,7 @@ namespace SI
 
         protected override void Draw()
         {
+
         }
     }
 }

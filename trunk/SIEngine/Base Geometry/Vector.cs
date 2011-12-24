@@ -55,6 +55,7 @@ namespace SIEngine
                 GL.Translate(X, Y, Z);
             }
 
+            #region operator overloading
             public static explicit operator OpenTK.Vector3(Vector vec)
             {
                 return new OpenTK.Vector3(vec.X, vec.Y, vec.Z);
@@ -64,6 +65,20 @@ namespace SIEngine
             {
                 return new Normal(vec.X, vec.Y, vec.Z);
             }
+
+            public static Vector operator*(Vector vec, float coef)
+            {
+                return new Vector(vec.X * coef, vec.Y * coef, vec.Z * coef, vec.W * coef);
+            }
+            public static Vector operator *(float coef, Vector vec)
+            {
+                return new Vector(vec.X * coef, vec.Y * coef, vec.Z * coef, vec.W * coef);
+            }
+            public static Vector operator+(Vector first, Vector second)
+            {
+                return new Vector(first.X + second.X, first.Y + second.Y, first.Z + second.Z, first.W + second.W);
+            }
+            #endregion
         }
     }
 }

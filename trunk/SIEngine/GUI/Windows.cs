@@ -118,9 +118,13 @@ namespace SIEngine
 
             protected virtual void OnMouseClick(object sender, MouseEventArgs evArgs)
             {
-                foreach (GUIObject child in this.Children)
+                ///note: foreach crashes because we modify the collection when switching states
+                ///e.g. by clicking the play game button
+
+                //foreach (GUIObject child in this.Children)
+                for (int i = 0; i < Children.Count; ++ i)
                 {
-                    child.CallEvent(GUIObject.EventType.MouseClick, new Vector(evArgs.X, evArgs.Y), null);
+                    Children[i].CallEvent(GUIObject.EventType.MouseClick, new Vector(evArgs.X, evArgs.Y), null);
                 }
             }
 

@@ -41,7 +41,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -49,6 +48,14 @@
     <Compile Include="Base Geometry\Normal.cs" />
     <Compile Include="Graphics\GeneralGraphics.cs" />
     <Compile Include="Graphics\Light.cs" />
+    <Compile Include="Graphics\Model Loading\MD2\MD2ModelLoader.cs" />
+    <Compile Include="Graphics\Model Loading\MD2\MD2Normals.cs" />
+    <Compile Include="Graphics\Model Loading\MD2\MD2Renderer.cs" />
+    <Compile Include="Graphics\ParticleEngines\Particle.cs" />
+    <Compile Include="Graphics\ParticleEngines\ExplosionParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngines\ParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngines\RectangleParticle.cs" />
+    <Compile Include="Graphics\ParticleEngines\ShockwaveParticleEmitter.cs" />
     <Compile Include="Graphics\Shaders\AbstractShader.cs" />
     <Compile Include="Graphics\Shaders\FragmentShader.cs" />
     <Compile Include="Graphics\Shaders\ShaderProgram.cs" />
@@ -61,7 +68,7 @@
     <Compile Include="Base Geometry\Vector.cs" />
     <Compile Include="Base Geometry\Vertex.cs" />
     <Compile Include="Graphics\Camera.cs" />
-    <Compile Include="Graphics\OBJModel.cs" />
+    <Compile Include="Graphics\Model Loading\OBJModel.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="GUI\Button.cs" />
     <Compile Include="GUI\GUIObject.cs" />
@@ -72,6 +79,7 @@
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Other\Extension Methods.cs" />
     <Compile Include="Other\GameConstants.cs" />
+    <Compile Include="Other\GeneralMath.cs" />
     <Compile Include="Other\GeometryMath.cs" />
     <Compile Include="Other\Other.cs" />
     <Compile Include="Physics\Gravity.cs" />

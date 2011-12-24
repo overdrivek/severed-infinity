@@ -47,8 +47,12 @@ namespace SIEngine
 
             public void PureDraw()
             {
-                foreach (Vertex vertex in Vertices)
-                    vertex.Draw();
+                GL.Begin(BeginMode.Polygon);
+                {
+                    foreach (Vertex vertex in Vertices)
+                        vertex.Draw();
+                }
+                GL.End();
             }
 
             public override void Draw()
