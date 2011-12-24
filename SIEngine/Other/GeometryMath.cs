@@ -6,7 +6,7 @@ using SIEngine.BaseGeometry;
 
 namespace SIEngine.Other
 {
-    class GeometryMath
+    public static class GeometryMath
     {
         /// <summary>
         /// Gets the magnitude of a vector.

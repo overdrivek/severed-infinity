@@ -34,9 +34,10 @@ namespace SIEngine.Graphics
             GL.MatrixMode(MatrixMode.Modelview);
             GeneralGraphics.DisableBlending();
             GeneralGraphics.EnableTexturing();
+
             GL.PushMatrix();
             {
-                GL.Translate(0.0f, 00.0f, -Camera.Zoom);
+                GL.Translate(0.0f, 00.0f, -Camera.Zoom - 50);
                 GL.Scale(100.0f, 100.0f, 100.0f);
                 GL.Rotate(angle, 0.0f, 1.0f, 0.0f);
                 GL.Color3(Color.White);
@@ -86,7 +87,6 @@ namespace SIEngine.Graphics
                 }
                 GL.End();
 
-                
                 front.SelectTexture();
                 GL.Begin(BeginMode.Quads);
                 {

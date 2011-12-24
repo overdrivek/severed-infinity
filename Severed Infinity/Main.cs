@@ -19,6 +19,11 @@ using Label = SIEngine.GUI.Label;
 using Object = SIEngine.GUI.Object;
 using MainMenu = SI.GUI.MainMenu;
 
+//temp
+using SI.Game.Cutscenes;
+using SIEngine.Graphics.Shaders;
+using SIEngine.Graphics.ParticleEngines;
+
 namespace SI
 {
     class EntryPoint
@@ -27,9 +32,9 @@ namespace SI
         {
             GameWindow window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
-            Camera.Zoom = -350.0f;
-            var bwe = new SI.Effects.ButtonWobbleEffect(new Button());
+            Camera.Zoom = -50.0f;
             window.Menu = new MainMenu(window);
+
 
             window.Run(30);
         }

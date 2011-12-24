@@ -19,9 +19,11 @@ namespace SIEngine
             public string Text { get; set; }
             public Font TextFont { get; set; }
             public Color ForegroundColor { get; set; }
+            public bool IgnoreSize { get; set; }
 
             public Label ()
             {
+                IgnoreSize = false;
                 this.TextFont = new Font("Comic", 14, FontStyle.Bold, GraphicsUnit.Pixel);
                 this.ForegroundColor = Color.Black;
                 this.Text = "";
@@ -35,7 +37,10 @@ namespace SIEngine
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.PushMatrix();
                 {
-                    GL.Translate(this.Location.X + this.Size.X / 2 - (this.TextFont.Height / 2) * (this.Text.Length / 2),
+                    if (IgnoreSize) 
+                        GL.Translate(this.Location.X + this.Size.X / 2 - (this.TextFont.Height / 2),
+                           this.Location.Y + (this.Size.Y - this.TextFont.Height) / 2, 0);
+                    else GL.Translate(this.Location.X + this.Size.X / 2 - (this.TextFont.Height / 2) * (this.Text.Length / 2),
                           this.Location.Y + (this.Size.Y - this.TextFont.Height) / 2, 0);
                     TextPrinter.Print(Text, ForegroundColor);
                 }
