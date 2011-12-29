@@ -114,6 +114,8 @@ namespace SIEngine
                         case ".JPG":
                         case ".png":
                         case ".PNG":
+                        case ".tif":
+                        case ".TIG":
                             LoadImageUniversal(path);
                             //LoadImageTarga(path);
                             break;
@@ -148,6 +150,7 @@ namespace SIEngine
             {
                 FileStream stream = File.OpenRead(path);
                 Image image = Image.FromStream(stream, false);
+                image.RotateFlip(RotateFlipType.RotateNoneFlipY);
                 Bitmap bmp = new Bitmap(image);
 
                 BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),
@@ -160,7 +163,6 @@ namespace SIEngine
                 bmp = null;
 
                 GC.Collect();
-                LoadImageBMP(path);
             }
 
             /// <summary>

@@ -8,6 +8,18 @@ namespace SIEngine.Other
 {
     public static class GeneralMath
     {
+        private static Random Generator = new Random();
+
+        public static int RandomInt()
+        {
+            return Generator.Next();
+        }
+        
+        public static float RandomFloat(float min, float max)
+        {
+            return min + (float)Generator.NextDouble() * (max - min);
+        }
+
         public static float Interpolate(float beginning, float end, float coef)
         {
             return coef * end + (1.0f - coef) * beginning;

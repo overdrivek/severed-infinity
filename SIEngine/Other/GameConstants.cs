@@ -7,22 +7,27 @@ namespace SIEngine.Other
 {
     public static class GameConstants
     { 
-        public const float MaxZoom = 100000.0f;
-        public const float MinZoom = -100000.0f;
+        public const decimal MaxZoom = 100000.0m;
+        public const decimal MinZoom = -100000.0m;
 
-        public const float MinCameraSensitivity = 100.0f;
-        public const float CameraSensitivityModifier = 5.0f;
+        public const decimal CameraErrorCoef = 0.90702947845804988662131519274376m;
 
-        public const float ZoomFactor = 0.5f;
-        public const float ZoomAcceleration = 0.5f;
-        public const float ZoomAccelerationFadeOut = 0.05f;
+        public const decimal MinCameraSensitivity = 100.0m;
+        public const decimal CameraSensitivityModifier = 5.0m;
+        public const decimal ZoomErrorMargin = 3.0m;
+        public const decimal ZoomFadeOutErrorCoef = 0.8m;
+        public const decimal ZoomHalfSpeedErrorCoef = 0.89m;
 
-        public const float MaxLeftAngle = -100.0f;
-        public const float MaxRightAngle = 100.0f;
-        public const float AngularAcceleration = 0.03f;
-        public const float AngularAccelerationFadeOut = 0.005f;
+        public const decimal ZoomFactor = 0.5m;
+        public const decimal ZoomAcceleration = 0.5m;
+        public const decimal ZoomAccelerationFadeOut = 0.05m;
 
-        public const float Speed = 0.5f;
+        public const decimal MaxLeftAngle = -100.0m;
+        public const decimal MaxRightAngle = 100.0m;
+        public const decimal AngularAcceleration = 1.7188m;
+        public const decimal AngularAccelerationFadeOut = 0.2864m;
+
+        public const decimal Speed = 0.5m;
 
         public const string InfoLogDirectory = "data/InfoLog.silog";
         public const string ErrorLogDirectory = "data/ErrorLog.silog";

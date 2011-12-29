@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using OpenTK;
 using System.Linq;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using SIEngine.Other;
@@ -81,7 +80,6 @@ Prepare!
 
             timer = new Timer();
             timer.Interval = 50;
-            timer.Start();
             timer.Tick += (o, e) =>
                 {
                     if (fadeOut < destFade)
@@ -103,17 +101,47 @@ Prepare!
             skip = new Button();
             skip.Text = "Skip/Continue";
             skip.Location = new Vector(300, 500);
+            skip.MouseClick += () =>
+                {
+                    End();
+                    Parent.State = Window.WindowState.Game;
+                };
 
             Parent.Children.Add(skip);
             Parent.Children3D.Add(this);
+            Visible = false;
+            skip.Visible = false;
+        }
+
+        public void Start()
+        {
+            Visible = true;
+            skip.Visible = true;
+            timer.Start();
+            Parent.State = Window.WindowState.Intro;
+        }
+
+        public void End()
+        {
+            timer.Stop();
+            skip.Visible = false;
+            this.Visible = false;
+            arrow.Visible = false;
+            gun.Visible = false;
+            counter = 0;
+            textControl.Text = "";
+            fadeOut = 0f;
         }
 
         public override void Draw()
         {
+            if (!Visible)
+                return;
+
             Camera.Zoom = -50;
 
             GeneralGraphics.EnableAlphaBlending();
-            GL.Color4(1.0f, 1.0f, 1.0f, fadeOut);
+            GL.Color4(0.0f, 0.0f, 0.0f, fadeOut);
             GeneralGraphics.DrawRectangle(new Vector(-30.0f, -30.0f, -2.0f), new Vector(500.0f, 500.0f));
             GL.Color4(Color.White);
 

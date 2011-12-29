@@ -29,15 +29,21 @@ namespace SIEngine.Other
         }
 
         /// <summary>
-        /// Gets the angle for a vector. 2 Dimensional.
+        /// Gets the angle between the vector and the X axis.
         /// </summary>
         /// <param name="vec">The vector to get the angle of</param>
         /// <returns></returns>
-        public static float GetAngle(Vector vec)
+        public static float GetZAngle(Vector vec)
         {
             return (float)Math.Asin(vec.Y
                 / Math.Sqrt(Math.Pow(vec.X, 2) + Math.Pow(vec.Y, 2)));
         }
+        public static float GetYAngle(Vector vec)
+        {
+            return (float)Math.Asin(vec.X
+                / Math.Sqrt(Math.Pow(vec.Z, 2) + Math.Pow(vec.X, 2)));
+        }
+
 
         public static double DegreeToRadian(double angle)
         {

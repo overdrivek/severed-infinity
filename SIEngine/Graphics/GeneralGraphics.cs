@@ -16,9 +16,14 @@ namespace SIEngine.Graphics
         public static float ShadeLight = 128.0f;
         public static float Angle = 0.0f;
         public static float AmbientLight = 32;
-        public static ShaderProgram SimulatedLighting = new ShaderProgram("data/effects/SimulatedLighting.vert",
-            "data/effects/SimulatedLighting.frag");
+        public static ShaderProgram SimulatedLighting { get; set; }
         
+        static GeneralGraphics()
+        {
+            SimulatedLighting = new ShaderProgram("data/effects/SimulatedLighting.vert",
+                "data/effects/SimulatedLighting.frag");
+        }
+
         public static void UseSimulatedLighting()
         {
             SimulatedLighting.UseProgram();

@@ -22,7 +22,11 @@ namespace SIEngine.Graphics.ParticleEngines
             : base(parent, gravity, location, currentColor, targetColor, velocity, scale, image, time)
         {
             Size = size;
-            ColorCoefIncrease = 0.1f;
+        }
+        public RectangleParticle(ParticleEmitter parent) : base()
+        {
+            Parent = parent;
+            Size = new Vector(0.0f, 0.0f, 0.0f);
         }
 
         public override void AnimationStep(int time)
@@ -46,7 +50,7 @@ namespace SIEngine.Graphics.ParticleEngines
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {
-                GL.Scale((Vector3)Scale);
+                if (Scale != null) GL.Scale((Vector3)Scale);
                 GL.Color4(CurrentColor);
                 Texture.SelectTexture();
 

@@ -150,7 +150,7 @@ namespace SIEngine
                 //this.Image = this.SecondaryImage;
                 //this.SecondaryImage = iMiddle;
 
-                GC.Collect();
+                //GC.Collect();
             } 
 
             public override void InternalMouseOut()

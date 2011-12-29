@@ -13,102 +13,98 @@ using Object = SIEngine.GUI.Object;
 
 namespace SIEngine.Graphics.ParticleEngines
 {
-    public class ExplosionParticleEmitter : ParticleEmitter
+    public class DebrisParticleEmitter : ParticleEmitter
     {
         #region Fields and Properties
         //properties
         public float Scale { get; set; }
         public Vector Gravity { get; set; }
         public float ExplosionDuration { get; set; }
-        public float FadeOutDuration { get; set; }
         public Color StartingColor { get; set; }
         public Color EndColor { get; set; }
-        public Color SmokeColor { get; set; }
         protected List<RectangleParticle> Particles { get; set; }
 
         //fields
-        protected float speed = 0.55f;
-        protected Vector particleSize = new Vector(0.5f, 0.5f);
-        protected Vector particleSizeIncrease = new Vector(1.0f, 1.0f);
-        protected Vector sizeIncreseShift = new Vector(-0.5f, -0.5f, 0.0f);
-        protected Texture defaultTexture = new Texture("data/img/exp1.png");
-
+        protected float speed = 3f;
+        protected Vector particleSize = new Vector(1.5f, 1.5f);
+        protected static Texture[] images = new Texture[]
+            {
+                new Texture("data/img/debris/d1.png"),
+                new Texture("data/img/debris/d2.png"),
+                new Texture("data/img/debris/d3.png"),
+                new Texture("data/img/debris/d4.png"),
+                new Texture("data/img/debris/d5.png"),
+                new Texture("data/img/debris/d6.png"),
+                new Texture("data/img/debris/d7.png"),
+                new Texture("data/img/debris/d8.png"),
+                new Texture("data/img/debris/d9.png")
+            };
         #endregion
 
         public override void SetInitialValues()
         {
+            float z = 0.0f;
             elapsedTime = 0;
             foreach (var particle in Particles)
             {
                 //Here we calculate the direction of our particle
                 float vx = speed * GeneralMath.RandomFloat(-1.0f, 1.0f);
-                float vy = speed * GeneralMath.RandomFloat(-1.0f, 1.0f);
+                float vy = speed * GeneralMath.RandomFloat(0.0f, 1.0f);
+                float vz = speed * GeneralMath.RandomFloat(-1.0f, 1.0f);
 
                 //next we should set the required values for the particle to work
                 particle.Gravity = Gravity;
                 particle.CurrentColor = StartingColor;
-                particle.TargetColor = EndColor;
                 particle.Velocity.X = vx;
                 particle.Velocity.Y = vy;
-                particle.Size.X = particleSize.X;
-                particle.Size.Y = particleSize.Y;
+                particle.Velocity.Z = vz;
                 particle.Location.X = GeneralMath.RandomFloat(-1.0f, 1.0f);
                 particle.Location.Y = GeneralMath.RandomFloat(-1.0f, 1.0f);
+                particle.Location.Z = z;
                 particle.colorCoef = 0.0f;
-                particle.ColorCoefIncrease = GeneralMath.RandomFloat(0.01f, 0.05f);
+                particle.ColorCoefIncrease = GeneralMath.RandomFloat(0.03f, 0.05f);
+                
+                z += 0.1f;
             }
         }
 
-        public void AnimationStep(object sender, EventArgs evArgs)
+        public void AnimationStep(object sender, EventArgs evArs)
         {
             if (Paused)
                 return;
 
             elapsedTime++;
-            if (ExplosionDuration + FadeOutDuration <= elapsedTime * MainTimer.Interval)
+            if (elapsedTime * MainTimer.Interval >= ExplosionDuration)
                 Pause();
 
             foreach (var part in Particles)
-            {
-                if (elapsedTime * MainTimer.Interval == ExplosionDuration)
-                {
-                    part.TargetColor = SmokeColor;
-                    part.ColorCoefIncrease = 0.03f;
-                    part.Velocity.X *= 0.3f;
-                    part.Velocity.Y = 0.1f;
-                }
-                part.Size += particleSizeIncrease;
-                part.Location += sizeIncreseShift;
                 part.AnimationStep(MainTimer.Interval * elapsedTime);
-            }
         }
 
-        public ExplosionParticleEmitter(int numParticles)
+        public DebrisParticleEmitter(int numParticles)
         {
             MaxParticleCount = numParticles;
+            Particles = new List<RectangleParticle>();
+            Gravity = new Vector(0f, -.5f, 0f); ;
             MainTimer = new Timer();
             MainTimer.Tick += AnimationStep;
             MainTimer.Interval = 10;
             Scale = 0.5f;
-            Gravity = new Vector(0.0f, 0.0f, 0.0f);
-            ExplosionDuration = 70;
-            FadeOutDuration = 500;
+            ExplosionDuration = 100;
             StartingColor = Color.FromArgb(255, Color.Orange);
-            EndColor = Color.FromArgb(128, Color.Red);
-            SmokeColor = Color.FromArgb(0, Color.Black);
+            EndColor = Color.FromArgb(255, Color.DarkGray);
 
             Particles = new List<RectangleParticle>();
-            float z = 0.0f;
             for (int i = 0; i < MaxParticleCount; ++i)
             {
                 //here we set the constant values of our particle
                 var temp = new RectangleParticle(this);
+                temp.Size.X = particleSize.X;
+                temp.Size.Y = particleSize.Y;
                 temp.AnimationTime = 10;
-                temp.Location.Z = z;
-                temp.Texture = defaultTexture;
+                temp.TargetColor = EndColor;
+                temp.Texture = images[GeneralMath.RandomInt() % images.Length];
                 Particles.Add(temp);
-
-                z += 0.1f;
             }
         }
 

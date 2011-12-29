@@ -27,11 +27,13 @@ namespace SIEngine.Graphics.ParticleEngines
         public Vector Scale { get; set; }
         public int AnimationTime { get; set; }
 
-        protected Texture Texture { get; set; }
+        public Texture Texture { get; set; }
         public string Image
         {
             set
             {
+                if (value == null)
+                    return;
                 Texture = new Texture(value);
             }
         }
@@ -49,6 +51,11 @@ namespace SIEngine.Graphics.ParticleEngines
             Image = image;
             AnimationTime = time;
         }
+        public Particle()
+        {
+            Location = new Vector(0.0f, 0.0f, 0.0f);
+            Velocity = new Vector(0.0f, 0.0f, 0.0f);
+        }
 
         public void ShiftColor(float coef)
         {
@@ -56,6 +63,9 @@ namespace SIEngine.Graphics.ParticleEngines
             int g = GeneralMath.Interpolate(CurrentColor.G, TargetColor.G, coef);
             int b = GeneralMath.Interpolate(CurrentColor.B, TargetColor.B, coef);
             int a = GeneralMath.Interpolate(CurrentColor.A, TargetColor.A, coef);
+
+            if (a < 0)
+                return;
 
             CurrentColor = Color.FromArgb(a, r, g, b);
         }
