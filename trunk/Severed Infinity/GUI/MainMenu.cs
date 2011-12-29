@@ -18,42 +18,30 @@ namespace SI.GUI
         private Button play, quit, settings, about;
         private Skybox skybox;
         private Credits credits;
-        private float curShift = -10.0f, destShift = 1000.0f;
+        private float curShift = -10.0f, destShift = 100.0f, shiftIncr = 1.5f;
         public GameWindow ParentWindow { get; set; }
-        
+        private IntroScene intro;
+
         public MainMenu(GameWindow window)
         {
             ParentWindow = window;
             skybox = new Skybox();
             ParentWindow.Children3D.Add(skybox);
 
+            intro = new IntroScene(ParentWindow);
+
             play = new Button();
             play.ApplyStylishEffect();
             play.Text = "Play Game";
             play.Image = "data/img/bck.bmp";
             play.MouseClick += () =>
-                {
-                    IntroScene intro = new IntroScene(ParentWindow);
-                    
-                    Timer timer = new Timer();
-                    timer.Interval = 10;
-                    timer.Start();
-                    timer.Tick += (o, e) =>
-                        {
-                            if (curShift < destShift)
-                            {
-                                curShift += 1.5f;
-
-                                play.Location.X -= curShift;
-                                settings.Location.X -= curShift;
-                                about.Location.X -= curShift;
-                                quit.Location.X -= curShift;
-                                return;
-                            }
-                            timer.Stop();
-                            timer.Dispose();
-                        };
-                };
+            {
+                intro.Start();
+                curShift = -12.0f;
+                destShift = 30.0f;
+                shiftIncr = 1.5f;
+                DoAnimation();        
+            };
             play.Location = new Vector(100, 120);
 
             settings = new Button();
@@ -87,6 +75,7 @@ namespace SI.GUI
 
             credits = new Credits(this);
 
+            ParentWindow.State = Window.WindowState.MainMenu;
             ParentWindow.AddChildren(play, settings, about, quit, credits);
 
             LogManager.WriteInfo("Main menu created.");
@@ -94,17 +83,47 @@ namespace SI.GUI
 
         public void RenderVisibility(bool visible)
         {
+            if (visible)
+            {
+                ParentWindow.State = Window.WindowState.MainMenu;
+
+                curShift = -30f;
+                shiftIncr = 1.5f;
+                destShift = -2.0f;
+                DoAnimation();
+
+                //i'm lazy
+                play.Location.X -= 2;
+                settings.Location.X -= 2;
+                about.Location.X -= 2;
+                quit.Location.X -= 2;
+            }
             play.Visible = visible;
             quit.Visible = visible;
             settings.Visible = visible;
             about.Visible = visible;
         }
 
-        #region animation and effects
-        private void EnterAnimation(int frame)
+        public void DoAnimation()
         {
+            Timer timer = new Timer();
+            timer.Interval = 10;
+            timer.Start();
+            timer.Tick += (o, e) =>
+            {
+                if (curShift < destShift)
+                {
+                    curShift += shiftIncr;
 
+                    play.Location.X -= curShift;
+                    settings.Location.X -= curShift;
+                    about.Location.X -= curShift;
+                    quit.Location.X -= curShift;
+                    return;
+                }
+                timer.Stop();
+                timer.Dispose();
+            };
         }
-        #endregion
     }
 }

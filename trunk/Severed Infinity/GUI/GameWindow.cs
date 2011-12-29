@@ -20,6 +20,8 @@ namespace SI
     public class GameWindow : Window
     {
         public MainMenu Menu { get; set; }
+        public IngameMenu GameMenu { get; set; }
+        public WindowState State { get; set; }
 
         public GameWindow()
         {
@@ -33,6 +35,24 @@ namespace SI
         protected override void Draw()
         {
 
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+            if (e.KeyChar == 27)
+            {
+                if (GameMenu != null)
+                {
+                    if (State == WindowState.Game)
+                        GameMenu.Show();
+                    else if (State == WindowState.InGameMenu)
+                    {
+                        GameMenu.Hide();
+                        State = WindowState.Game;
+                    }
+                }
+            }
         }
     }
 }

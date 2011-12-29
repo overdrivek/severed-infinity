@@ -57,6 +57,7 @@ namespace SIEngine
                 this.KeyDown = new KeyEventDel(InternalKeyDown);
                 this.MouseUp = new MouseEventDel(InternalMouseUp);
                 Visible = true;
+                Location = new Vector(0f, 0f, 0f);
                 Size = new Vector(150, 20);
             }
 

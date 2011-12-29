@@ -41,8 +41,11 @@
   <ItemGroup>
     <Compile Include="bin\Debug\data\effects\Effects\ButtonWobbleEffect.cs" />
     <Compile Include="Game\Cutscenes\IntroScene.cs" />
+    <Compile Include="Game\FlyingObject.cs" />
+    <Compile Include="Game\ObjectShooter.cs" />
     <Compile Include="GUI\Credits.cs" />
     <Compile Include="GUI\GameWindow.cs" />
+    <Compile Include="GUI\IngameMenu.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GUI\MainMenu.cs" />
     <Compile Include="Other\GameplayConstants.cs" />

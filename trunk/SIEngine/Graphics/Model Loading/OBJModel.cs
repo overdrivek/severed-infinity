@@ -75,11 +75,7 @@ namespace SIEngine.Graphics
             private void InternalDraw()
             {
                 foreach (Polygon face in Faces)
-                {
-                    GL.Begin(BeginMode.Polygon);
-                        face.PureDraw();
-                    GL.End();
-                }
+                    face.PureDraw();
             }
         }
         private class Material
@@ -106,6 +102,17 @@ namespace SIEngine.Graphics
         private Random colorMizer;
         public Color Color { get; set; }
         public bool Stroke { get; set; }
+        private Texture texture;
+        public string Image
+        {
+            set
+            {
+                texture = new Texture(value);
+            }
+        }
+        public float ScaleFactor { get; set; }
+        public bool Rotate { get; set; }
+        public Vector RotationVector { get; set; }
 
         public OBJModel()
         {
@@ -123,19 +130,6 @@ namespace SIEngine.Graphics
             ScaleFactor = 1.0f;
         }
 
-        private Texture texture;
-        public string Image
-        {
-            set
-            {
-                texture = new Texture(value);
-            }
-        }
-
-        public float ScaleFactor { get; set; }
-        public bool Rotate { get; set; }
-        public Vector RotationVector { get; set; }
-
         float x = 0.0f;
         public void Draw()
         {
@@ -145,8 +139,8 @@ namespace SIEngine.Graphics
             GeneralGraphics.DrawFilled();
 
             GeneralGraphics.EnableTexturing();
-            //GeneralGraphics.EnableAlphaBlending();
-            GL.Color3(Color.White);
+            GeneralGraphics.EnableAlphaBlending();
+            GL.Color4(Color.White);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {
@@ -154,7 +148,7 @@ namespace SIEngine.Graphics
                     group.Draw();
             }
             GL.PopMatrix();
-            //GeneralGraphics.DisableBlending();
+            GeneralGraphics.DisableBlending();
             GeneralGraphics.DisableTexturing();
         }
 

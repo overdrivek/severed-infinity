@@ -15,36 +15,79 @@ namespace SIEngine.Graphics.ParticleEngines
 {
     public class ShockwaveParticleEmitter : ParticleEmitter
     {
-        Texture ShockWave = new Texture("data/img/ring.png");
-        Vector Position;
-        Color CurrentColor;
+        #region Fields and Properties
+        //properties
+        public float Scale { get; set; }
+        public float ExplosionDuration { get; set; }
+        public Color StartingColor { get; set; }
+        public float RotationAngle { get; set; }
 
-        public override void Revert()
+        //fields
+        protected Vector particleSize = new Vector(1.5f, 1.5f);
+        protected Texture defaultTexture = new Texture("data/img/ring.png");
+        protected Vector particleSizeIncrease = new Vector(5.0f, 5.0f);
+        protected Vector sizeIncreseShift = new Vector(-2.5f, -2.5f, 0.0f);
+        protected Vector Position { get; set; }
+        protected Color CurrentColor { get; set; }
+        #endregion
+
+        public override void SetInitialValues()
         {
-            Position = new Vector(0.5f, 3.0f, 2.0f);
-            CurrentColor = Color.Orange;
-            Size = new Vector(1.0f, 1.0f);
+            Position.X = 0.5f;
+            Position.Y = 0.0f;
+            Position.Z = 1.0f;
+            CurrentColor = StartingColor;
+            Size.X = particleSize.X;
+            Size.Y = particleSize.Y;
+            elapsedTime = 0;
+        }
+
+        public void AnimationStep(object sender, EventArgs evArgs)
+        {
+            if (Paused)
+                return;
+
+            if (elapsedTime * MainTimer.Interval >= ExplosionDuration)
+                Pause();
+            elapsedTime++;
+
+            Size += particleSizeIncrease;
+            if (CurrentColor.A >= 30)
+                CurrentColor = Color.FromArgb(CurrentColor.A - 30, CurrentColor);
+            else CurrentColor = Color.FromArgb(0, 0, 0, 0);
+            Position += sizeIncreseShift;
         }
 
         public ShockwaveParticleEmitter()
         {
+            Position = new Vector(0f, 0f);
+            ExplosionDuration = 100;
             MainTimer = new Timer();
             MainTimer.Interval = 10;
+            MainTimer.Tick += AnimationStep;
+            Scale = 0.5f;
+            RotationAngle = 100f;
+            StartingColor = Color.OrangeRed;
+        }
+
+        public override void Pause()
+        {
+            Paused = true;
+            MainTimer.Stop();
+        }
+        public override void Start()
+        {
+            SetInitialValues();
+            Paused = false;
             MainTimer.Start();
-            MainTimer.Tick += (o, e) =>
-                {
-                    Size += new Vector(5.0f, 5.0f);
-                    if (CurrentColor.A >= 30)
-                        CurrentColor = Color.FromArgb(CurrentColor.A - 30, CurrentColor);
-                    else CurrentColor = Color.FromArgb(0, 0, 0, 0);
-                    Position += new Vector(-2.5f, -2.5f, 0.0f);
-                };
-            Revert();
+        }
+        public override void Stop()
+        {
         }
 
         public override void Draw()
         {
-            if (CurrentColor.A <= 10)
+            if (Paused)
                 return;
 
             GeneralGraphics.UseDefaultShaderProgram();
@@ -54,9 +97,10 @@ namespace SIEngine.Graphics.ParticleEngines
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {
-                GL.Scale(0.2f, 0.2f, 0.2f);
-                GL.Rotate(100.0f, 1.0f, 0.0f, 0.0f);
-                ShockWave.SelectTexture();
+                GL.Translate(Location.X, Location.Y, Location.Z);
+                GL.Scale(Scale, Scale, Scale);
+                GL.Rotate(RotationAngle, 1.0f, 0.0f, 0.0f);
+                defaultTexture.SelectTexture();
                 GL.Color4(CurrentColor);
 
                 GeneralGraphics.DrawRectangle(Position, Size);

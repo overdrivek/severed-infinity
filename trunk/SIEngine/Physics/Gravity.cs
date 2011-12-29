@@ -12,9 +12,7 @@ namespace SIEngine.Physics
         public static Vector Force;
         public static void ApplyGravity (PhysicsObject target)
         {
-            target.Velocity.X += Force.X;
-            target.Velocity.Y += Force.Y;
-            target.Velocity.Z += Force.Z;
+            target.Velocity += Force;
         }
 
         static Gravity()

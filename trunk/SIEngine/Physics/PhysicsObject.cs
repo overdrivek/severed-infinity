@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using SIEngine.BaseGeometry;
 using SIEngine.GUI;
+using Object = SIEngine.GUI.Object;
 
 namespace SIEngine.Physics
 {
@@ -11,14 +12,11 @@ namespace SIEngine.Physics
     {
         public float Mass { get; set; }
         public Vector Velocity { get; set; }
-        public GUIObject ParentObject { get; set; }
+        public Object ParentObject { get; set; }
 
         public void ModulatePhysics ()
         {
-            ParentObject.Location.X *= Velocity.X;
-            ParentObject.Location.Y *= Velocity.Y;
-            ParentObject.Location.Z *= Velocity.Z;
-            ParentObject.Location.W *= Velocity.W;
+            ParentObject.Location += Velocity;
         }
         public void ApplyNaturalForces()
         {

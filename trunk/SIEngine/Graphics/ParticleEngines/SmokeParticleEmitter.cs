@@ -13,25 +13,23 @@ using Object = SIEngine.GUI.Object;
 
 namespace SIEngine.Graphics.ParticleEngines
 {
-    public class ExplosionParticleEmitter : ParticleEmitter
+    public class SmokeParticleEmitter : ParticleEmitter
     {
         #region Fields and Properties
         //properties
         public float Scale { get; set; }
         public Vector Gravity { get; set; }
-        public float ExplosionDuration { get; set; }
         public float FadeOutDuration { get; set; }
         public Color StartingColor { get; set; }
         public Color EndColor { get; set; }
-        public Color SmokeColor { get; set; }
         protected List<RectangleParticle> Particles { get; set; }
 
         //fields
-        protected float speed = 0.55f;
-        protected Vector particleSize = new Vector(0.5f, 0.5f);
-        protected Vector particleSizeIncrease = new Vector(1.0f, 1.0f);
-        protected Vector sizeIncreseShift = new Vector(-0.5f, -0.5f, 0.0f);
-        protected Texture defaultTexture = new Texture("data/img/exp1.png");
+        protected float speed = 0.05f;
+        protected Vector particleSize = new Vector(2f, 2f);
+        protected Vector particleSizeIncrease = new Vector(0.1f, 0.1f);
+        protected Vector sizeIncreseShift = new Vector(-0.05f, -0.05f, -0.05f);
+        protected Texture defaultTexture = new Texture("data/img/smoke.png");
 
         #endregion
 
@@ -55,7 +53,7 @@ namespace SIEngine.Graphics.ParticleEngines
                 particle.Location.X = GeneralMath.RandomFloat(-1.0f, 1.0f);
                 particle.Location.Y = GeneralMath.RandomFloat(-1.0f, 1.0f);
                 particle.colorCoef = 0.0f;
-                particle.ColorCoefIncrease = GeneralMath.RandomFloat(0.01f, 0.05f);
+                particle.ColorCoefIncrease = GeneralMath.RandomFloat(0.001f, 0.005f);
             }
         }
 
@@ -65,37 +63,29 @@ namespace SIEngine.Graphics.ParticleEngines
                 return;
 
             elapsedTime++;
-            if (ExplosionDuration + FadeOutDuration <= elapsedTime * MainTimer.Interval)
+            if (FadeOutDuration <= elapsedTime * MainTimer.Interval)
                 Pause();
 
             foreach (var part in Particles)
             {
-                if (elapsedTime * MainTimer.Interval == ExplosionDuration)
-                {
-                    part.TargetColor = SmokeColor;
-                    part.ColorCoefIncrease = 0.03f;
-                    part.Velocity.X *= 0.3f;
-                    part.Velocity.Y = 0.1f;
-                }
                 part.Size += particleSizeIncrease;
+                part.Location += Gravity;
                 part.Location += sizeIncreseShift;
                 part.AnimationStep(MainTimer.Interval * elapsedTime);
             }
         }
 
-        public ExplosionParticleEmitter(int numParticles)
+        public SmokeParticleEmitter(int numParticles)
         {
             MaxParticleCount = numParticles;
             MainTimer = new Timer();
             MainTimer.Tick += AnimationStep;
             MainTimer.Interval = 10;
             Scale = 0.5f;
-            Gravity = new Vector(0.0f, 0.0f, 0.0f);
-            ExplosionDuration = 70;
-            FadeOutDuration = 500;
-            StartingColor = Color.FromArgb(255, Color.Orange);
-            EndColor = Color.FromArgb(128, Color.Red);
-            SmokeColor = Color.FromArgb(0, Color.Black);
+            Gravity = new Vector(0.0f, 0.005f, 0.0f);
+            FadeOutDuration = 5000;
+            StartingColor = Color.FromArgb(255, Color.LightGray);
+            EndColor = Color.FromArgb(0, Color.White);
 
             Particles = new List<RectangleParticle>();
             float z = 0.0f;

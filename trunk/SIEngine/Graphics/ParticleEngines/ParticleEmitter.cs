@@ -16,11 +16,9 @@ namespace SIEngine.Graphics.ParticleEngines
     public abstract class ParticleEmitter : Object
     {
         protected int MaxParticleCount { get; set; }
-        protected List<RectangleParticle> Particles { get; set; }
         protected bool Paused { get; set; }
-        protected Random Generator { get; set; }
 
-        protected int ElapsedTime { get; set; }
+        protected int elapsedTime;
         protected Timer MainTimer { get; set; }
         public int TimerIterval
         {
@@ -36,6 +34,9 @@ namespace SIEngine.Graphics.ParticleEngines
             }
         }
 
-        public abstract void Revert();
+        public abstract void SetInitialValues();
+        public abstract void Start();
+        public abstract void Pause();
+        public abstract void Stop();
     }
 }

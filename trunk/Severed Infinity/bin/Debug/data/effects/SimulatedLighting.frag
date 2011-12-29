@@ -4,7 +4,7 @@ varying vec4 v_worldSpacePos;
 varying vec3 normal;
 
 const float ambientAmount = 0.3;
-const float diffuseAmount = 0.05;
+const float diffuseAmount = 0.03;
 const float specularPower = 60.0;
 const float specularAmount = 0.0;
 
@@ -31,8 +31,11 @@ void main()
 
 	float diffuseTerm = max(0.0, dot(lightDir, normal));
 	
+	float alpha = texColor.w;
+
 	texColor *= diffuseTerm * diffuseAmount + ambientAmount;
 	texColor += specularTerm;
+	texColor.w = alpha;
 
 
 	gl_FragColor = texColor;
