@@ -17,11 +17,17 @@ namespace SIEngine.Graphics
         public static float Angle = 0.0f;
         public static float AmbientLight = 32;
         public static ShaderProgram SimulatedLighting { get; set; }
+        public static Texture ExclamationTexture { get; set; }
+        public static Texture ExclamationMask { get; set; }
+        public static Texture InfoBoxFrame { get; set; }
         
         static GeneralGraphics()
         {
             SimulatedLighting = new ShaderProgram("data/effects/SimulatedLighting.vert",
                 "data/effects/SimulatedLighting.frag");
+            ExclamationTexture = new Texture("data/img/icons/exclamation.png");
+            ExclamationMask = new Texture("data/img/icons/mask.png");
+            InfoBoxFrame = new Texture("data/img/icons/frame.png");
         }
 
         public static void UseSimulatedLighting()
@@ -32,6 +38,15 @@ namespace SIEngine.Graphics
         public static void UseDefaultShaderProgram()
         {
             GL.UseProgram(0);
+        }
+
+        public static int RenderMode()
+        {
+            return GL.RenderMode(RenderingMode.Render);
+        }
+        public static void PickingMode()
+        {
+            GL.RenderMode(RenderingMode.Select);
         }
 
         public static void EnableAlphaBlending()

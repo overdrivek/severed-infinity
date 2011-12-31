@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,18 +60,20 @@
     <Compile Include="Graphics\ParticleEngines\RectangleParticle.cs" />
     <Compile Include="Graphics\ParticleEngines\ShockwaveParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEngines\SmokeParticleEmitter.cs" />
+    <Compile Include="Graphics\Rendering\VBO.cs" />
     <Compile Include="Graphics\Shaders\AbstractShader.cs" />
     <Compile Include="Graphics\Shaders\FragmentShader.cs" />
     <Compile Include="Graphics\Shaders\ShaderProgram.cs" />
     <Compile Include="Graphics\Shaders\VertexShader.cs" />
-    <Compile Include="Graphics\Skybox.cs" />
+    <Compile Include="Graphics\Rendering\Skybox.cs" />
     <Compile Include="GUI\ButtonEffects.cs" />
+    <Compile Include="GUI\InfoBox.cs" />
     <Compile Include="GUI\Label.cs" />
     <Compile Include="GUI\Object.cs" />
     <Compile Include="Base Geometry\TextureCoordinate.cs" />
     <Compile Include="Base Geometry\Vector.cs" />
     <Compile Include="Base Geometry\Vertex.cs" />
-    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\Rendering\Camera.cs" />
     <Compile Include="Graphics\Model Loading\OBJModel.cs" />
     <Compile Include="Graphics\Texture.cs" />
     <Compile Include="GUI\Button.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="GUI\TextBox.cs" />
     <Compile Include="GUI\TextPrinter.cs" />
     <Compile Include="GUI\Windows.cs" />
+    <Compile Include="Input\Picking.cs" />
     <Compile Include="Logging\LogManager.cs" />
     <Compile Include="Other\Extension Methods.cs" />
     <Compile Include="Other\GameConstants.cs" />
@@ -90,9 +94,7 @@
     <Compile Include="Physics\PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Input\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

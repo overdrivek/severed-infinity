@@ -160,9 +160,8 @@ namespace SIEngine
                 Camera.CurrentMode = Camera.CameraMode.OrthographicOverview;
                 Camera.DoCameraTransformation(this);
                 foreach (GUIObject child in this.Children)
-                    if(child.Visible)
+                    if (child.Visible)
                         child.Draw();
-
                 Draw();
 
                 SwapBuffers();

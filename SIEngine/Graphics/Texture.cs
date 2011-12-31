@@ -150,7 +150,7 @@ namespace SIEngine
             {
                 FileStream stream = File.OpenRead(path);
                 Image image = Image.FromStream(stream, false);
-                image.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                //image.RotateFlip(RotateFlipType.RotateNoneFlipY);
                 Bitmap bmp = new Bitmap(image);
 
                 BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height),

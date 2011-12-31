@@ -91,7 +91,7 @@ namespace SIEngine
                 GL.PopMatrix();
             }
 
-            public override void InternalMouseUp()
+            public override void InternalMouseUp(Vector mousePos)
             {
                 this.State = ObjectState.Clicked;
             }

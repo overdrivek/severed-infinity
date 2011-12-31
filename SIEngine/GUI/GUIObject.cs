@@ -39,9 +39,15 @@ namespace SIEngine
             /// Sets the visibility of the control.
             /// </summary>
             public bool Visible { get; set; }
+            /// <summary>
+            /// The name of the control.
+            /// </summary>
+            public int Name { get; set; }
+            public Window Parent { get; set; }
 
-            public delegate void MouseEventDel();
+            public delegate void MouseEventDel(Vector mousePos);
             public delegate void KeyEventDel(Key argument);
+            public MouseEventDel MouseMove;
             public MouseEventDel MouseOver;
             public MouseEventDel MouseOut;
             public MouseEventDel MouseClick;
@@ -50,19 +56,28 @@ namespace SIEngine
 
             public GUIObject ()
             {
-                this.MouseOver = new MouseEventDel(InternalMouseOver);
-                this.MouseOut = new MouseEventDel(InternalMouseOut);
-                this.MouseClick = new MouseEventDel(InternalMouseClick);
-                this.State = ObjectState.Normal;
-                this.KeyDown = new KeyEventDel(InternalKeyDown);
-                this.MouseUp = new MouseEventDel(InternalMouseUp);
+                MouseOver = new MouseEventDel(InternalMouseOver);
+                MouseOut = new MouseEventDel(InternalMouseOut);
+                MouseClick = new MouseEventDel(InternalMouseClick);
+                MouseMove = new MouseEventDel(InternalMouseMove);
+                State = ObjectState.Normal;
+                KeyDown = new KeyEventDel(InternalKeyDown);
+                MouseUp = new MouseEventDel(InternalMouseUp);
                 Visible = true;
                 Location = new Vector(0f, 0f, 0f);
                 Size = new Vector(150, 20);
             }
 
+            //this is created to increase performance
+            private Vector mousePosition = new Vector(0f, 0f);
             public void CallEvent(EventType type, Vector position, Key? argument, params object[] a)
             {
+                if (Parent != null)
+                {
+                    mousePosition.X = Parent.Mouse.X;
+                    mousePosition.Y = Parent.Mouse.Y;
+                }
+
                 if (Location == null || !Visible)
                     return;
 
@@ -71,7 +86,7 @@ namespace SIEngine
                 {
                     if (this.State == ObjectState.Clicked && type == EventType.MouseMove)
                     {
-                        MouseOut.Invoke();
+                        MouseOut.Invoke(mousePosition);
                         return;
                     }
 
@@ -79,7 +94,7 @@ namespace SIEngine
                         (this.State == ObjectState.Clicked && type != EventType.MouseClick))
                         return;
 
-                    MouseOut.Invoke();
+                    MouseOut.Invoke(mousePosition);
                     this.State = ObjectState.Normal;
                     return;
                 }
@@ -87,17 +102,17 @@ namespace SIEngine
                 switch (type)
                 {
                     case EventType.MouseClick:
-                        MouseClick.Invoke();
+                        MouseClick.Invoke(mousePosition);
                         this.State = ObjectState.Clicked;
                         break;
                     case EventType.MouseUp:
                         this.State = ObjectState.Hover;
-                        MouseUp.Invoke();
+                        MouseUp.Invoke(mousePosition);
                         break;
                     case EventType.MouseMove:
                         if (this.State == ObjectState.Hover || this.State == ObjectState.Clicked)
                             return;
-                        MouseOver.Invoke();
+                        MouseOver.Invoke(mousePosition);
                         this.State = ObjectState.Hover;
                         break;
                     case EventType.KeyDown:
@@ -109,10 +124,11 @@ namespace SIEngine
             }
 
             public abstract void Draw();
-            public virtual void InternalMouseOver() { }
-            public virtual void InternalMouseOut() { }
-            public virtual void InternalMouseClick() { }
-            public virtual void InternalMouseUp() { }
+            public virtual void InternalMouseOver(Vector mousePos) { }
+            public virtual void InternalMouseOut(Vector mousePos) { }
+            public virtual void InternalMouseClick(Vector mousePos) { }
+            public virtual void InternalMouseUp(Vector mousePos) { }
+            public virtual void InternalMouseMove(Vector mousePos) { }
             public virtual void InternalKeyDown (Key key) { }
         }
     }

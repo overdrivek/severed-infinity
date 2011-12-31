@@ -153,13 +153,13 @@ namespace SIEngine
                 //GC.Collect();
             } 
 
-            public override void InternalMouseOut()
+            public override void InternalMouseOut(Vector mousePos)
             {
                 this.State = ObjectState.Normal;
                 SwitchState();
             }
 
-            public override void InternalMouseOver()
+            public override void InternalMouseOver(Vector mousePos)
             {
                 this.State = ObjectState.Hover;
                 SwitchState();

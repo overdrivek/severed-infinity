@@ -6,6 +6,8 @@ using SIEngine.BaseGeometry;
 using SIEngine.Graphics;
 using SIEngine.Graphics.Shaders;
 using OpenTK.Graphics.OpenGL;
+using System.Drawing;
+using SIEngine.Other;
 
 namespace SIEngine.GUI
 {
@@ -13,7 +15,19 @@ namespace SIEngine.GUI
     {
         public OBJModel Body { get; set; }
         public ShaderProgram ShaderProgram { get; set; }
+        public Color pickColor = GeneralMath.GetPickingColor();
         
+        public void PickDraw()
+        {
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.PushMatrix();
+            {
+                if (Location != null) Location.TranslateTo();
+                Body.PickDraw();
+            }
+            GL.PopMatrix();
+        }
+
         public override void Draw ()
         {
             if (!Visible)

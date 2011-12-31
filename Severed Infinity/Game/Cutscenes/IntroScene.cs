@@ -101,7 +101,7 @@ Prepare!
             skip = new Button();
             skip.Text = "Skip/Continue";
             skip.Location = new Vector(300, 500);
-            skip.MouseClick += () =>
+            skip.MouseClick += (pos) =>
                 {
                     End();
                     Parent.State = Window.WindowState.Game;
