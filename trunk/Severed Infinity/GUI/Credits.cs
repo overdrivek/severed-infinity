@@ -44,7 +44,7 @@ namespace SI.GUI
             back.Image = "data/img/bck.bmp";
             back.Text = "Return";
             back.Size.X = 80;
-            back.MouseClick += () =>
+            back.MouseClick += (pos) =>
                 {
                     Visible = false;
                 };

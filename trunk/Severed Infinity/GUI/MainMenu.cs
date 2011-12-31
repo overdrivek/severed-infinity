@@ -34,7 +34,7 @@ namespace SI.GUI
             play.ApplyStylishEffect();
             play.Text = "Play Game";
             play.Image = "data/img/bck.bmp";
-            play.MouseClick += () =>
+            play.MouseClick += (pos) =>
             {
                 intro.Start();
                 curShift = -12.0f;
@@ -57,7 +57,7 @@ namespace SI.GUI
             //about.Size.X = 80;
             about.Image = "data/img/bck.bmp";
             about.Location = new Vector(100, 180);
-            about.MouseClick += () =>
+            about.MouseClick += (pos) =>
                 {
                     this.credits.Visible = this.credits.Visible ? false : true;
                 };
@@ -68,7 +68,7 @@ namespace SI.GUI
             //quit.Size.X = 60;
             quit.Image = "data/img/bck.bmp";
             quit.Location = new Vector(100, 210);
-            quit.MouseClick += () =>
+            quit.MouseClick += (pos) =>
                 {
                     Environment.Exit(0);
                 };

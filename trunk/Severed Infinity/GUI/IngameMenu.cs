@@ -33,7 +33,7 @@ namespace SI.GUI
             resume.Location = new Vector(x - resume.Size.X, y - shift * 3);
             resume.Text = "Resume";
             resume.Visible = false;
-            resume.MouseClick += () =>
+            resume.MouseClick += (pos) =>
                 {
                     Hide();
                     Parent.State = Window.WindowState.Game;
@@ -44,7 +44,7 @@ namespace SI.GUI
             settings.Location = new Vector(x - settings.Size.X + 7, y - shift * 2);
             settings.Text = "Settings";
             settings.Visible = false;
-            settings.MouseClick += () =>
+            settings.MouseClick += (pos) =>
                 {
 
                 };
@@ -54,7 +54,7 @@ namespace SI.GUI
             quit.Location = new Vector(x - quit.Size.X, y - shift);
             quit.Text = "Quit";
             quit.Visible = false;
-            quit.MouseClick += () =>
+            quit.MouseClick += (pos) =>
                 {
                     Parent.Menu.RenderVisibility(true);
                     Hide();

@@ -9,6 +9,7 @@ using SIEngine.BaseGeometry;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using SIEngine.Graphics.Rendering;
 
 using SIEngine.Graphics.Shaders;
 namespace SIEngine.Graphics
@@ -49,6 +50,7 @@ namespace SIEngine.Graphics
                     {
                         GeneralGraphics.DrawWireframe();
                         InternalDraw();
+                        GeneralGraphics.DrawFilled();
                     }
                 }
                 else
@@ -60,6 +62,7 @@ namespace SIEngine.Graphics
                         GeneralGraphics.DrawWireframe();
                         GL.Color3(Color.Black);
                         GL.CallList(ListNumber);
+                        GeneralGraphics.DrawFilled();
                     }
                 }
             }
@@ -72,7 +75,7 @@ namespace SIEngine.Graphics
                 GL.EndList();
             }
 
-            private void InternalDraw()
+            public void InternalDraw()
             {
                 foreach (Polygon face in Faces)
                     face.PureDraw();
@@ -113,8 +116,20 @@ namespace SIEngine.Graphics
         public float ScaleFactor { get; set; }
         public bool Rotate { get; set; }
         public Vector RotationVector { get; set; }
+        private VBO VBORenderer { get; set; }
 
         public OBJModel()
+        {
+            Initialize();
+        }
+
+        public OBJModel(string path)
+        {
+            Initialize();
+            ParseOBJFile(path);
+        }
+
+        public void Initialize()
         {
             Stroke = false;
             Color = Color.White;
@@ -126,8 +141,29 @@ namespace SIEngine.Graphics
             Rotate = false;
             colorMizer = new Random();
             RotationVector = new Vector(0.0f, 1.0f, 0.0f);
+            VBORenderer = new VBO();
 
             ScaleFactor = 1.0f;
+        }
+
+        private void UploadModelToVBO()
+        {
+            List<Vertex> vertices = new List<Vertex>();
+
+            foreach (Group group in Groups)
+                foreach (Polygon face in group.Faces)
+                    foreach (Vertex vert in face.Vertices)
+                        vertices.Add(vert);
+
+            VBORenderer.UploadData(vertices, BufferUsageHint.DynamicDraw);
+        }
+
+        public void PickDraw()
+        {
+            if (Rotate) GL.Rotate(x, RotationVector.X, RotationVector.Y, RotationVector.Z);
+            GL.Scale(ScaleFactor, ScaleFactor, ScaleFactor);
+
+            VBORenderer.Draw(BeginMode.Polygon);
         }
 
         float x = 0.0f;
@@ -158,6 +194,7 @@ namespace SIEngine.Graphics
 
             ParseModel(path);
             BuildModel();
+            UploadModelToVBO();
         }
 
         private void ParseModel(string path)

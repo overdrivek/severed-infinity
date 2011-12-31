@@ -5,7 +5,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using OpenTK;
-using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using SIEngine;
 using SIEngine.GUI;
 using SIEngine.Graphics;
@@ -25,7 +25,10 @@ using SI.Game.Cutscenes;
 using SIEngine.Graphics.Shaders;
 using SIEngine.Graphics.ParticleEngines;
 using SI.Game;
+using SIEngine.Input;
 using Key = OpenTK.Input.Key;
+using System.Threading;
+using SIEngine.Graphics.Rendering;
 
 namespace SI
 {
@@ -33,7 +36,7 @@ namespace SI
     {
         static void Main(string[] Args)
         {
-            GameWindow window = new GameWindow();
+            var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -50m;
             Camera.ControlMode = Camera.Mode.Smooth;
@@ -58,19 +61,19 @@ namespace SI
             reset.Text = "Reset";
             reset.Location = new Vector(20.0f, 10.0f);
             reset.ApplyStylishEffect();
-            reset.MouseClick += () =>
+            reset.MouseClick += (pos) =>
             {
                 //exp.Start();
                 //wave.Start();
                 //deb.Start();
                 //smoke.Start();
-                fo.Location = new Vector(-10f, -15f, -40f);
-                fo.Start();
+                
+                new InfoBox(window, new Vector(150f, 200f), "asdf").Show();
             };
-
+            
             window.Children.Add(reset);
             window.Add3DChildren(fo, smoke, exp, deb, wave);
-    
+
             window.Run(30);
         }
 
