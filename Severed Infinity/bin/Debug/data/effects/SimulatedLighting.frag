@@ -16,7 +16,7 @@ void main()
 {
 	vec4 lightDir = vec4(v_worldSpacePos.x + 20, v_worldSpacePos.y + 20, v_worldSpacePos.z, 1.0);
 
-	vec4 texColor = texture2D(tex, gl_TexCoord[0].xy);
+	vec4 texColor = texture2D(tex, gl_TexCoord[0].xy) * gl_Color;
 
 	// eye position in world space
 	vec4 eyePos = gl_ModelViewMatrixInverse * vec4(0.0, 0.0, 0.0, 1.0);

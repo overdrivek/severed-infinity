@@ -35,12 +35,15 @@ namespace SIEngine.Graphics
                 ListNumber = -1;
             }
 
-            public void Draw()
+            public void Draw(Color? color)
             {
+                if (color != null)
+                    GL.Color4(color.Value);
+
                 if (Material != null && Material.Image != null)
                     Material.Image.SelectTexture();
-                else 
-                    GL.Color3(Color);
+                else if (color == null)
+                    GL.Color4(Color);
 
                 if (ListNumber == -1)
                 {
@@ -65,6 +68,11 @@ namespace SIEngine.Graphics
                         GeneralGraphics.DrawFilled();
                     }
                 }
+            }
+
+            public void Draw()
+            {
+                Draw(null);
             }
 
             public void Precompile()
@@ -169,6 +177,12 @@ namespace SIEngine.Graphics
         float x = 0.0f;
         public void Draw()
         {
+            Draw(null);
+        }
+
+        public void Draw(Color? color, bool gColor = false)
+        {
+
             if (Rotate) GL.Rotate(x++, RotationVector.X, RotationVector.Y, RotationVector.Z);
             GL.Scale(ScaleFactor, ScaleFactor, ScaleFactor);
 
@@ -176,12 +190,14 @@ namespace SIEngine.Graphics
 
             GeneralGraphics.EnableTexturing();
             GeneralGraphics.EnableAlphaBlending();
-            GL.Color4(Color.White);
+            //GL.Color4(Color.White);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {
                 foreach (Group group in Groups)
-                    group.Draw();
+                    if (!gColor)
+                        group.Draw(color);
+                    else group.Draw(group.Material.DiffuseColor);
             }
             GL.PopMatrix();
             GeneralGraphics.DisableBlending();

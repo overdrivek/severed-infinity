@@ -165,7 +165,26 @@ namespace SIEngine.Graphics
 
         private static DecimalVector halfSpeed;
         private static DecimalVector halfAngle;
-        private static bool useTargets;
+        private static bool useTargets, rotate;
+        private static decimal rotationRadius, angularVelocity, rotationAngle;
+        private static DecimalVector rotationCenter;
+
+        public static void RotateAround(DecimalVector position, decimal angularVelocity = 0.5m)
+        {
+            rotationCenter = position;
+            rotationRadius = (decimal)Math.Sqrt((double)(Location.X - position.X) * (double)(Location.X - position.X) +
+                (double)(Location.Z - position.Z) * (double)(Location.Z - position.Z));
+            rotationAngle = (decimal)GeometryMath.DegreeToRadian(Math.Asin((float)(Location.Z - position.Z) /
+                (float)rotationRadius));
+            
+            rotate = true;
+            Camera.angularVelocity = angularVelocity;
+        }
+
+        public static void StopRotation()
+        {
+            rotate = false;
+        }
 
         /// <summary>
         /// Moves the camera to a given point.
@@ -290,6 +309,19 @@ namespace SIEngine.Graphics
 
         private static void AnimationStep(object sender, EventArgs evArgs)
         {
+            if (rotate)
+            {
+                Location.X = -rotationCenter.X + rotationRadius * (decimal)Math.Sin(
+                    (double)GeometryMath.DegreeToRadian((float)rotationAngle));
+                Location.Z = -rotationCenter.Z - rotationRadius * (decimal)Math.Cos(
+                    (double)GeometryMath.DegreeToRadian((float)rotationAngle));
+                Angle.Y = rotationAngle;
+                if (Angle.Y > 360)
+                    Angle.Y -= 360;
+                rotationAngle += angularVelocity;
+                return;
+            }
+
             if (!useTargets)
                 return;
 

@@ -23,35 +23,39 @@ namespace SI.Game
         {
             set
             {
-                if (value)
+                if (!value)
                     MainTimer.Start();
                 else MainTimer.Stop();
             }
         }
         public PhysicsObject PhysicalBody { get; set; }
-        public OBJModel GraphicalBody { get; set; }
         public Timer MainTimer { get; set; }
-        private List<SmokeParticleEmitter> Smoke { get; set; }
-        public int MaxEmitters { get; set; }
 
-        private int currentEmitter = 0;
-        private int elapsedTime = 0;
+        //blur
+        public bool EnableMotionBlur { get; set; }
+        public int BlurStackSize { get; set; }
+        private LinkedList<Vector> BlurStack { get; set; }
+        private float alphaStep;
+        private int time;
+        public int Lifespan { get; set; }
 
-        public FlyingObject(string modelPath, float scale, int maxEmitters)
+        public FlyingObject(GameWindow parent, OBJModel model, int blurStackSize)
         {
-            MaxEmitters = maxEmitters;
+            Parent = parent;
+            Lifespan = 100;
+
+            //blur
+            BlurStackSize = blurStackSize;
+            BlurStack = new LinkedList<Vector>();
+            alphaStep = .5f / BlurStackSize;
 
             PhysicalBody = new PhysicsObject();
             PhysicalBody.ParentObject = this;
+            PhysicalBody.Velocity = new Vector(GeneralMath.RandomFloat(-0.7f, 0.7f),
+                GeneralMath.RandomFloat(1.5f, 2.5f), GeneralMath.RandomFloat(-0.5f, 0.5f));
 
-            GraphicalBody = new OBJModel();
-            GraphicalBody.ParseOBJFile(modelPath);
-            GraphicalBody.ScaleFactor = scale;
+            Body = model;
 
-            Smoke = new List<SmokeParticleEmitter>();
-            for (int i = 0; i < MaxEmitters; ++i)
-                Smoke.Add(new SmokeParticleEmitter(16));
-            
             Location = new Vector(0.0f, 0.0f, 0.0f);
             MainTimer = new Timer();
             MainTimer.Interval = 10;
@@ -60,44 +64,76 @@ namespace SI.Game
 
         public void Start()
         {
-            PhysicalBody.Velocity = new Vector(GeneralMath.RandomFloat(-1.5f, 1.5f),
-                GeneralMath.RandomFloat(1.5f, 3.5f), GeneralMath.RandomFloat(-0.5f, 0.5f));
             MainTimer.Start();
+            BlurStack.Clear();
 
+            for (int i = 0; i < BlurStackSize; ++i)
+                BlurStack.AddFirst((Vector)null);
+
+            Parent.Add3DChildren(this);
         }
 
         private void AnimationStep(object sedner, EventArgs evArgs)
         {
+            if (time >= Lifespan)
+            {
+                Parent.Children3D.Remove(this);
+                MainTimer.Stop();
+            }
+            time++;
+
+            Vector temp = BlurStack.Last.Value;
+            BlurStack.RemoveLast();
+            BlurStack.AddFirst(temp);
+
+            if (BlurStack.First.Value == null)
+                BlurStack.First.Value = new Vector(0f, 0f, 0f);
+
+            BlurStack.First().X = Location.X;
+            BlurStack.First().Y = Location.Y;
+            BlurStack.First().Z = Location.Z;
             PhysicalBody.ApplyNaturalForces();
             PhysicalBody.ModulatePhysics();
-
-            //if (elapsedTime % 5 == 0)
-            {
-                //elapsedTime = 0;
-                if (currentEmitter >= MaxEmitters)
-                    currentEmitter = 0;
-
-                Smoke[currentEmitter].Location.X = Location.X;
-                Smoke[currentEmitter].Location.Y = Location.Y + 0.5f;
-                Smoke[currentEmitter].Location.Z = Location.Z - 1.0f;
-
-                Smoke[currentEmitter++].Start();
-            }
-
         }
 
         public override void Draw()
         {
-            foreach (var emitter in Smoke)
-                emitter.Draw();
+            GeneralGraphics.EnableAlphaBlending();
+            bool stroke = Body.Stroke, rotate = Body.Rotate;
 
             GL.PushMatrix();
             {
+                GL.Color4(Color.White);
                 GL.Translate(Location.X, Location.Y, Location.Z);
-                GraphicalBody.Draw();
+                Body.Draw();
             }
             GL.PopMatrix();
-            
+
+            float alpha = 0.6f;
+
+            Body.Stroke = false;
+            Body.Rotate = false;
+                foreach (var trail in BlurStack)
+                {
+                    if (trail == null)
+                        continue;
+                    
+                    GL.PushMatrix();
+                    {
+                        GL.Translate(trail.X, trail.Y, trail.Z);
+                        Body.Draw(Color.FromArgb((byte)(255 * alpha), Color.LightGray));
+                    }
+                    GL.PopMatrix();
+                    //Console.WriteLine(alpha);
+
+                    alpha -= alphaStep;
+                }
+
+                Body.Stroke = stroke;
+                Body.Rotate = rotate;
+
+            GeneralGraphics.DisableBlending();
+
         }
     }
 }
