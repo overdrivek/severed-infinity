@@ -48,7 +48,7 @@ namespace SI.Game
 
         private void AnimationStep(object sender, EventArgs evArgs)
         {
-            if (Math.Abs((float)Camera.Location.Z - fObject.Location.Z) <= 20 + (float)GameConstants.ZoomErrorMargin
+            if (Math.Abs(-(float)Camera.Location.Z - fObject.Location.Z) <= 20 + (float)GameConstants.ZoomErrorMargin
                 && !firstTimeout)
             {
                 Camera.RotateAround(new DecimalVector((decimal)fObject.Location.X, 0m,
@@ -91,6 +91,12 @@ namespace SI.Game
 
             var info = new InfoBox(Parent, new Vector(200, 200), Messages[2]);
             info.Show();
+            info.OKClicked += (pos) =>
+                {
+                    Camera.Location.X = 0m;
+                    Camera.Location.Y = 0m;
+                    Camera.Location.Z = 0m;
+                };
         }
 
         private void MarkObject(object sender, MouseEventArgs evArgs)
