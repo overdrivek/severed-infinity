@@ -95,7 +95,7 @@ namespace SI
             };
 
 
-            window.Children.Add(reset);
+            //window.Children.Add(reset);
             //window.Children3D.Add(obj);
 
             window.Run(30);
