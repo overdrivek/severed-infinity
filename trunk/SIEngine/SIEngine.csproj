@@ -49,11 +49,14 @@
     <Compile Include="Base Geometry\DecimalVector.cs" />
     <Compile Include="Base Geometry\Normal.cs" />
     <Compile Include="Graphics\GeneralGraphics.cs" />
+    <Compile Include="Graphics\Gradient.cs" />
+    <Compile Include="Graphics\Heightmap.cs" />
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Model Loading\MD2\MD2ModelLoader.cs" />
     <Compile Include="Graphics\Model Loading\MD2\MD2Normals.cs" />
     <Compile Include="Graphics\Model Loading\MD2\MD2Renderer.cs" />
     <Compile Include="Graphics\ParticleEngines\DebrisParticleEmitter.cs" />
+    <Compile Include="Graphics\ParticleEngines\Explosion.cs" />
     <Compile Include="Graphics\ParticleEngines\Particle.cs" />
     <Compile Include="Graphics\ParticleEngines\ExplosionParticleEmitter.cs" />
     <Compile Include="Graphics\ParticleEngines\ParticleEmitter.cs" />

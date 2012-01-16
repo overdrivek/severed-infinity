@@ -131,6 +131,8 @@ Prepare!
             counter = 0;
             textControl.Text = "";
             fadeOut = 0f;
+
+            var tutorial = new Tutorial(Parent);
         }
 
         public override void Draw()

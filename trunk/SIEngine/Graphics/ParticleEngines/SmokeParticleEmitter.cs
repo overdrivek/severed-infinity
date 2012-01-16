@@ -53,7 +53,7 @@ namespace SIEngine.Graphics.ParticleEngines
                 particle.Location.X = GeneralMath.RandomFloat(-1.0f, 1.0f);
                 particle.Location.Y = GeneralMath.RandomFloat(-1.0f, 1.0f);
                 particle.colorCoef = 0.0f;
-                particle.ColorCoefIncrease = GeneralMath.RandomFloat(0.001f, 0.005f);
+                particle.ColorCoefIncrease = 10 / (FadeOutDuration);//GeneralMath.RandomFloat(0.01f, 0.0f);
             }
         }
 
@@ -84,7 +84,7 @@ namespace SIEngine.Graphics.ParticleEngines
             Scale = 0.5f;
             Gravity = new Vector(0.0f, 0.005f, 0.0f);
             FadeOutDuration = 5000;
-            StartingColor = Color.FromArgb(255, Color.LightGray);
+            StartingColor = Color.FromArgb(128, Color.LightGray);
             EndColor = Color.FromArgb(0, Color.White);
 
             Particles = new List<RectangleParticle>();

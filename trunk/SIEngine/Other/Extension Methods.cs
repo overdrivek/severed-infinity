@@ -43,6 +43,12 @@ namespace SIEngine
                 else return val;
             }
 
+            public static void Swap<T>(this List<T> list, int first, int second)
+            {
+                T temp = list[first];
+                list[first] = list[second];
+                list[second] = temp;
+            }
         }
     }
 }

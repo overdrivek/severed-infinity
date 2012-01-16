@@ -102,17 +102,18 @@ namespace SIEngine
 
             protected virtual void OnMouseMove(object sender, MouseEventArgs evArgs)
             {
-                foreach (GUIObject child in this.Children)
+                for (int i = 0; i < Children.Count; ++i)
                 {
-                    child.CallEvent(GUIObject.EventType.MouseMove, new Vector(evArgs.X, evArgs.Y), null);
+                    Children[i].CallEvent(GUIObject.EventType.MouseMove, new Vector(evArgs.X, evArgs.Y), null);
                 }
             }
 
             protected virtual void OnMouseUp(object sender, MouseEventArgs evArgs)
             {
-                foreach (GUIObject child in this.Children)
+                //collection might be changed
+                for (int i = 0; i < Children.Count; ++ i)
                 {
-                    child.CallEvent(GUIObject.EventType.MouseUp, new Vector(evArgs.X, evArgs.Y), null);
+                    Children[i].CallEvent(GUIObject.EventType.MouseUp, new Vector(evArgs.X, evArgs.Y), null);
                 }
             }
 
@@ -130,9 +131,9 @@ namespace SIEngine
 
             protected virtual void OnKeyPress(KeyboardKeyEventArgs evArgs)
             {
-                foreach (GUIObject child in this.Children)
+                for (int i = 0; i < Children.Count; ++i)
                 {
-                    child.CallEvent(GUIObject.EventType.KeyDown, child.Location, evArgs.Key);
+                    Children[i].CallEvent(GUIObject.EventType.KeyDown, Children[i].Location, evArgs.Key);
                 }
             }
             

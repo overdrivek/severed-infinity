@@ -22,6 +22,7 @@ namespace SI
         public MainMenu Menu { get; set; }
         public IngameMenu GameMenu { get; set; }
         public WindowState State { get; set; }
+        public bool MouseClicked { get; set; }
 
         public GameWindow()
         {

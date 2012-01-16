@@ -58,5 +58,16 @@ namespace SI.Properties {
                 this["AntiAliasing"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection UnlockedObjects {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["UnlockedObjects"]));
+            }
+            set {
+                this["UnlockedObjects"] = value;
+            }
+        }
     }
 }

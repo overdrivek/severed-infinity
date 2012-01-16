@@ -50,6 +50,7 @@ namespace SIEngine
             public MouseEventDel MouseMove;
             public MouseEventDel MouseOver;
             public MouseEventDel MouseOut;
+            public MouseEventDel MouseDown;
             public MouseEventDel MouseClick;
             public MouseEventDel MouseUp;
             public KeyEventDel KeyDown;
@@ -59,6 +60,7 @@ namespace SIEngine
                 MouseOver = new MouseEventDel(InternalMouseOver);
                 MouseOut = new MouseEventDel(InternalMouseOut);
                 MouseClick = new MouseEventDel(InternalMouseClick);
+                MouseDown = new MouseEventDel(InternalMouseDown);
                 MouseMove = new MouseEventDel(InternalMouseMove);
                 State = ObjectState.Normal;
                 KeyDown = new KeyEventDel(InternalKeyDown);
@@ -84,32 +86,37 @@ namespace SIEngine
                 if (!(position.X >= this.Location.X && position.X <= this.Size.X + this.Location.X
                     && position.Y >= this.Location.Y && position.Y <= this.Location.Y + this.Size.Y))
                 {
-                    if (this.State == ObjectState.Clicked && type == EventType.MouseMove)
+
+                    if (State == ObjectState.Clicked && type == EventType.MouseMove)
                     {
                         MouseOut.Invoke(mousePosition);
                         return;
                     }
 
-                    if (this.State == ObjectState.Normal || 
+                    if (this.State == ObjectState.Normal ||
                         (this.State == ObjectState.Clicked && type != EventType.MouseClick))
                         return;
 
                     MouseOut.Invoke(mousePosition);
                     this.State = ObjectState.Normal;
                     return;
+                    
                 }
 
                 switch (type)
                 {
                     case EventType.MouseClick:
-                        MouseClick.Invoke(mousePosition);
+                        MouseDown.Invoke(mousePosition);
                         this.State = ObjectState.Clicked;
                         break;
                     case EventType.MouseUp:
+                        if (State == ObjectState.Clicked)
+                            MouseClick.Invoke(mousePosition);
                         this.State = ObjectState.Hover;
                         MouseUp.Invoke(mousePosition);
                         break;
                     case EventType.MouseMove:
+                        MouseMove.Invoke(mousePosition);
                         if (this.State == ObjectState.Hover || this.State == ObjectState.Clicked)
                             return;
                         MouseOver.Invoke(mousePosition);
@@ -127,6 +134,7 @@ namespace SIEngine
             public virtual void InternalMouseOver(Vector mousePos) { }
             public virtual void InternalMouseOut(Vector mousePos) { }
             public virtual void InternalMouseClick(Vector mousePos) { }
+            public virtual void InternalMouseDown(Vector mousePos) { }
             public virtual void InternalMouseUp(Vector mousePos) { }
             public virtual void InternalMouseMove(Vector mousePos) { }
             public virtual void InternalKeyDown (Key key) { }

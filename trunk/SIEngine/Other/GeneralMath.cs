@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Text;
 using SIEngine.BaseGeometry;
 using SIEngine.Logging;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SIEngine.Other
 {

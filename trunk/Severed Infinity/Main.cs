@@ -36,6 +36,13 @@ namespace SI
     {
         static void Main(string[] Args)
         {
+            //safety hack
+            if (Properties.Settings.Default.UnlockedObjects == null)
+            {
+                Properties.Settings.Default.UnlockedObjects = new System.Collections.Specialized.StringCollection();
+                Properties.Settings.Default.Save();
+            }
+            
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -50m;
@@ -52,27 +59,44 @@ namespace SI
             exp.Location = new Vector(-10f, 0f, -40f);
             wave.Location = new Vector(-10f, 0f, -40f);
             deb.Location = new Vector(-10f, 0f, -40f);
-            smoke.Location = new Vector(-10f, 0f, -40f);
 
-            FlyingObject fo = new FlyingObject("data/models/apple/apple.obj",
-                0.05f, 200);
+            //FlyingObject fo = new FlyingObject("data/models/knight/apple.obj",
+            //    0.05f, 3);
+            //fo.Location = new Vector(-10, -14, -40);
+
+            OBJModel model = new OBJModel("data/models/apple/apple.obj");
+            model.ScaleFactor = 0.1f;
+            Object obj = new Object();
+            obj.Location = new Vector(10f, 0f, 20f);
+            obj.Body = model;
 
             Button reset = new Button();
             reset.Text = "Reset";
             reset.Location = new Vector(20.0f, 10.0f);
             reset.ApplyStylishEffect();
+
+            bool rot = false;
             reset.MouseClick += (pos) =>
             {
                 //exp.Start();
                 //wave.Start();
                 //deb.Start();
-                //smoke.Start();
                 
-                new InfoBox(window, new Vector(150f, 200f), "asdf").Show();
+                //new InfoBox(window, new Vector(600f, 10f), "asdf").Show();
+                //var fobj = new FlyingObject(window, model, 5);
+                //fobj.Location = new Vector(0f, -20f, 0f);
+
+                //fobj.Start();
+
+                if (!rot)
+                    Camera.RotateAround(new DecimalVector(10m, 0m, 20m));
+                else Camera.StopRotation();
+                rot = rot ? false : true;
             };
-            
+
+
             window.Children.Add(reset);
-            window.Add3DChildren(fo, smoke, exp, deb, wave);
+            //window.Children3D.Add(obj);
 
             window.Run(30);
         }
