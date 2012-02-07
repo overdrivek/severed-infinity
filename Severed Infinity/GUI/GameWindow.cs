@@ -31,6 +31,9 @@ namespace SI
             Initialize(width, height, GameplayConstants.WindowName);
 
             LogManager.WriteInfo("Main window created successfully.");
+
+            Mouse.ButtonDown += (o, e) => MouseClicked = true;
+            Mouse.ButtonUp += (o, e) => MouseClicked = false;
         }
 
         protected override void Draw()

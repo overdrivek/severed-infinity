@@ -4,9 +4,9 @@ varying vec4 v_worldSpacePos;
 varying vec3 normal;
 
 const float ambientAmount = 0.3;
-const float diffuseAmount = 0.03;
+const float diffuseAmount = 0.0005;
 const float specularPower = 60.0;
-const float specularAmount = 0.0;
+const float specularAmount = 0.1;
 
 float rand(vec2 co){
     return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);

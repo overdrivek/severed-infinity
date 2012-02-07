@@ -16,6 +16,7 @@ namespace SIEngine.GUI
     public class InfoBox : GUIObject
     {
         public MouseEventDel OKClicked;
+        public MouseEventDel ExclamationClicked;
         public string Message
         {
             get
@@ -36,6 +37,7 @@ namespace SIEngine.GUI
         private Vector targetLocation;
         private Vector ExclamationSize { get; set; }
         private Timer MainTimer;
+        public bool CanBeMoved { get; set; }
 
         //animation
         private float animationCoef;
@@ -51,10 +53,12 @@ namespace SIEngine.GUI
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="target"></param>
-        public InfoBox(Window parent, Vector target, string message, Vector size = null)
+        public InfoBox(Window parent, Vector target, string message)
         {
+            CanBeMoved = true;
             Location = new Vector(target.X, target.Y);
             OKClicked = new MouseEventDel((pos) => { });
+            ExclamationClicked = new MouseEventDel((pos) => { });
 
             ExclamationSize = new Vector(60, 55);
             ExclamationLocation = new Vector((parent.Width - ExclamationSize.X) / 2,
@@ -88,6 +92,7 @@ namespace SIEngine.GUI
                 Parent.Children.Remove(buttonOk);
                 Parent.Children.Remove(mainLabel);
                 Parent.Children.Remove(this);
+                MainTimer.Stop();
             };
 
             Parent.Mouse.Move += MouseMoveFunc;
@@ -162,6 +167,7 @@ namespace SIEngine.GUI
                     {
                         buttonOk.Visible = true;
                         mainLabel.Visible = true;
+                        ExclamationClicked.Invoke(null);
                     }
                 }
             }
@@ -188,6 +194,9 @@ namespace SIEngine.GUI
         private Vector locationShift = new Vector(0f, 0f);
         public override void InternalMouseDown(Vector mousePos)
         {
+            if (!CanBeMoved)
+                return;
+
             if ( !((Parent.Mouse.X > buttonOk.Location.X && Parent.Mouse.X < buttonOk.Location.X+
                 buttonOk.Size.X) && (Parent.Mouse.Y > buttonOk.Location.Y && Parent.Mouse.Y <
                 buttonOk.Location.Y + buttonOk.Size.Y))

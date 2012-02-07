@@ -38,11 +38,18 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="bin\Debug\data\effects\Effects\ButtonWobbleEffect.cs" />
     <Compile Include="Game\Cutscenes\IntroScene.cs" />
     <Compile Include="Game\FlyingObject.cs" />
     <Compile Include="Game\Game.cs" />
+    <Compile Include="Game\Gun.cs" />
+    <Compile Include="Game\Level.cs" />
+    <Compile Include="Game\LoadingScreen.cs" />
+    <Compile Include="Game\ModelManager.cs" />
     <Compile Include="Game\ObjectShooter.cs" />
     <Compile Include="Game\Tutorial.cs" />
     <Compile Include="GUI\Credits.cs" />

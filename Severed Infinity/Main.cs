@@ -12,6 +12,7 @@ using SIEngine.Graphics;
 using SIEngine.BaseGeometry;
 using SIEngine.Physics;
 using System.Threading;
+using SI.Game;
 using Vector = SIEngine.BaseGeometry.Vector;
 using Button = SIEngine.GUI.Button;
 using TextBox = SIEngine.GUI.TextBox;
@@ -24,79 +25,66 @@ using IngameMenu = SI.GUI.IngameMenu;
 using SI.Game.Cutscenes;
 using SIEngine.Graphics.Shaders;
 using SIEngine.Graphics.ParticleEngines;
-using SI.Game;
 using SIEngine.Input;
 using Key = OpenTK.Input.Key;
-using System.Threading;
 using SIEngine.Graphics.Rendering;
+using SIEngine.Other;
 
 namespace SI
 {
     class EntryPoint
     {
+        static float logn(float x)
+        {
+            return (float)Math.Log(0.2, (x - 3 * x * x));
+        }
+
         static void Main(string[] Args)
         {
-            //safety hack
-            if (Properties.Settings.Default.UnlockedObjects == null)
-            {
-                Properties.Settings.Default.UnlockedObjects = new System.Collections.Specialized.StringCollection();
-                Properties.Settings.Default.Save();
-            }
-            
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
+            Game.Game.MainWindow = window;
             Camera.Zoom = -50m;
             Camera.ControlMode = Camera.Mode.Smooth;
+
+            //if (Properties.Settings.Default.unlockStatus == null)
+            {
+                Properties.Settings.Default.unlockStatus = new bool[1 << 5];
+                for (int i = 0; i < Properties.Settings.Default.unlockStatus.Length; ++ i)
+                    Properties.Settings.Default.unlockStatus[i] = false;
+                Properties.Settings.Default.unlockStatus[0] = true;
+                Console.WriteLine("crap");
+
+                Properties.Settings.Default.Save();
+            }
 
             window.Menu = new MainMenu(window);
             window.GameMenu = new IngameMenu(window);
 
-            var exp = new ExplosionParticleEmitter(16);
-            var wave = new ShockwaveParticleEmitter();
-            var deb = new DebrisParticleEmitter(16);
-            var smoke = new SmokeParticleEmitter(16);
+            var button = new Button();
+            button.Text = "Unlock";
+            button.Location = new Vector(50, 20);
+            button.ApplyStylishEffect();
+            button.Image = "data/img/bck.bmp";
+            button.MouseClick += (pos) =>
+                {
+                    //ModelManager.UnlockModel(window);
 
-            exp.Location = new Vector(-10f, 0f, -40f);
-            wave.Location = new Vector(-10f, 0f, -40f);
-            deb.Location = new Vector(-10f, 0f, -40f);
-
-            //FlyingObject fo = new FlyingObject("data/models/knight/apple.obj",
-            //    0.05f, 3);
-            //fo.Location = new Vector(-10, -14, -40);
+                    new Level(window, 30, 600).Start();
+                };
 
             OBJModel model = new OBJModel("data/models/apple/apple.obj");
-            model.ScaleFactor = 0.1f;
+            model.ScaleFactor = 0.03f;
             Object obj = new Object();
-            obj.Location = new Vector(10f, 0f, 20f);
             obj.Body = model;
+            obj.Location = new Vector(-10, -10);
+            //window.Add3DChildren(obj);
+            model.CalculateReach();
 
-            Button reset = new Button();
-            reset.Text = "Reset";
-            reset.Location = new Vector(20.0f, 10.0f);
-            reset.ApplyStylishEffect();
+            Gun gun = new Gun();
+            window.Add3DChildren(gun);
 
-            bool rot = false;
-            reset.MouseClick += (pos) =>
-            {
-                //exp.Start();
-                //wave.Start();
-                //deb.Start();
-                
-                //new InfoBox(window, new Vector(600f, 10f), "asdf").Show();
-                //var fobj = new FlyingObject(window, model, 5);
-                //fobj.Location = new Vector(0f, -20f, 0f);
-
-                //fobj.Start();
-
-                if (!rot)
-                    Camera.RotateAround(new DecimalVector(10m, 0m, 20m));
-                else Camera.StopRotation();
-                rot = rot ? false : true;
-            };
-
-
-            //window.Children.Add(reset);
-            //window.Children3D.Add(obj);
+            //window.AddChildren(button);
 
             window.Run(30);
         }
