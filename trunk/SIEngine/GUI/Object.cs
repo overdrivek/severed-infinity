@@ -19,13 +19,9 @@ namespace SIEngine.GUI
         
         public void PickDraw()
         {
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.PushMatrix();
-            {
-                if (Location != null) Location.TranslateTo();
-                Body.PickDraw();
-            }
-            GL.PopMatrix();
+            if (Location != null) GL.Translate(Location.X, Location.Y, Location.Z);
+            Body.PickDraw();
+            if (Location != null) GL.Translate(-Location.X, -Location.Y, -Location.Z);
         }
 
         public override void Draw ()

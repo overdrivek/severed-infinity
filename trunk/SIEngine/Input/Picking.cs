@@ -8,6 +8,8 @@ using SIEngine.GUI;
 using SIEngine.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using SIEngine.Other;
+using OpenTK;
 using Object = SIEngine.GUI.Object;
 
 namespace SIEngine.Input
@@ -58,7 +60,9 @@ namespace SIEngine.Input
             Camera.DoCameraTransformation(window);
             GeneralGraphics.DisableTexturing();
             GeneralGraphics.DisableBlending();
-            
+            GL.Disable(EnableCap.LineSmooth);
+            GL.Disable(EnableCap.PointSmooth);
+
             foreach (Object obj in objects)
             {
                 GL.Color4(obj.pickColor);
@@ -74,6 +78,38 @@ namespace SIEngine.Input
             Object target = objects.FirstOrDefault(obj => obj.pickColor == pickedColor);
 
             return target;
+        }
+
+        public static Object RayCastPick(Window window, params Object[] objects)
+        {
+            float x = window.Mouse.X;
+            float y = window.Height - window.Mouse.Y;
+
+            Camera.CurrentMode = Camera.CameraMode.Overview;
+            Camera.DoCameraTransformation(window);
+            Vector position = GeometryMath.UnProjectMouse(new Vector(x, y));
+
+            objects.OrderBy(obj => obj.Location.Z);
+
+            float distance = 1000f;
+            Object selected = null;
+
+            //Console.WriteLine("{0} {1}", position.X, position.Y);
+
+            foreach (var obj in objects)
+            {
+                if (position.X > (obj.Body.MinReach.X + obj.Location.X)
+                    && position.X < (obj.Body.MaxReach.X + obj.Location.X)
+                    && position.Y > (obj.Body.MinReach.Y - obj.Location.Y)
+                    && position.Y < (obj.Body.MaxReach.Y - obj.Location.Y)
+                    && distance > obj.Location.DistanceTo(position))
+                {
+                    distance = obj.Location.DistanceTo(position);
+                    selected = obj;
+                }        
+            }
+            
+            return selected;
         }
     }
 }

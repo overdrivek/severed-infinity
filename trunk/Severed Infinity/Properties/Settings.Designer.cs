@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace SI.Properties {
     
     
@@ -58,15 +60,18 @@ namespace SI.Properties {
                 this["AntiAliasing"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection UnlockedObjects {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["UnlockedObjects"]));
+        public bool[] unlockStatus
+        {
+            get
+            {
+                return ((bool[])(this["unlockStatus"]));
             }
-            set {
-                this["UnlockedObjects"] = value;
+            set
+            {
+                this["unlockStatus"] = value;
             }
         }
     }

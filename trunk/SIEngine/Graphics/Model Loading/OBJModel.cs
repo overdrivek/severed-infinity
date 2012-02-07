@@ -16,8 +16,9 @@ namespace SIEngine.Graphics
 {
     public class OBJModel
     {
+        public Vector MinReach, MaxReach;
 
-        private class Group
+        public class Group
         {
             public string Name { get; set; }
             public int ListNumber { get; set; }
@@ -41,9 +42,16 @@ namespace SIEngine.Graphics
                     GL.Color4(color.Value);
 
                 if (Material != null && Material.Image != null)
+                {
+                    GeneralGraphics.EnableTexturing();
                     Material.Image.SelectTexture();
-                else if (color == null)
-                    GL.Color4(Color);
+                }
+                else
+                {
+                    if (color == null)
+                        GL.Color4(Color);
+                    GeneralGraphics.DisableTexturing();
+                }
 
                 if (ListNumber == -1)
                 {
@@ -89,7 +97,7 @@ namespace SIEngine.Graphics
                     face.PureDraw();
             }
         }
-        private class Material
+        public class Material
         {
             public Texture Image { get; set; }
             public Color DiffuseColor { get; set; }
@@ -108,7 +116,7 @@ namespace SIEngine.Graphics
         private List<Vector> Vectors { get; set; }
         private List<TextureCoordinate> TexCoords { get; set; }
         private List<Normal> Normals { get; set; }
-        private List<Group> Groups { get; set; }
+        public List<Group> Groups { get; set; }
         private List<Material> Materials { get; set; }
         private Random colorMizer;
         public Color Color { get; set; }
@@ -174,10 +182,11 @@ namespace SIEngine.Graphics
             VBORenderer.Draw(BeginMode.Polygon);
         }
 
+        public bool ApplyOriginalObjectColor = false;
         float x = 0.0f;
         public void Draw()
         {
-            Draw(null);
+            Draw(null, ApplyOriginalObjectColor);
         }
 
         public void Draw(Color? color, bool gColor = false)
@@ -197,7 +206,8 @@ namespace SIEngine.Graphics
                 foreach (Group group in Groups)
                     if (!gColor)
                         group.Draw(color);
-                    else group.Draw(group.Material.DiffuseColor);
+                    else
+                        group.Draw(group.Material.DiffuseColor);
             }
             GL.PopMatrix();
             GeneralGraphics.DisableBlending();
@@ -211,6 +221,32 @@ namespace SIEngine.Graphics
             ParseModel(path);
             BuildModel();
             UploadModelToVBO();
+            CalculateReach();
+        }
+
+        public void CalculateReach()
+        {
+            MinReach = new Vector(1000f, 1000f);
+            MaxReach = new Vector(0f, 0f);
+            foreach (var group in Groups)
+                foreach (var triangle in group.Faces)
+                    foreach (var vertex in triangle.Vertices)
+                    {
+                        if (vertex.Location == null)
+                            continue;
+
+                        if (vertex.Location.X < MinReach.X)
+                            MinReach.X = vertex.Location.X;
+                        if (vertex.Location.X > MaxReach.X)
+                            MaxReach.X = vertex.Location.X;
+
+                        if (vertex.Location.Y < MinReach.Y)
+                            MinReach.Y = vertex.Location.Y;
+                        if (vertex.Location.Y > MaxReach.Y)
+                            MaxReach.Y = vertex.Location.Y;
+                    }
+            MinReach *= ScaleFactor;
+            MaxReach *= ScaleFactor;
         }
 
         private void ParseModel(string path)

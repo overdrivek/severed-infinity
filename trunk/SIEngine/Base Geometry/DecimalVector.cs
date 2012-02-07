@@ -56,6 +56,11 @@ namespace SIEngine
             }
 
             #region operator overloading
+            
+            public static explicit operator Vector(DecimalVector vec)
+            {
+                return new Vector((float)vec.X, (float)vec.Y, (float)vec.Z, (float)vec.W);
+            }
             public static explicit operator OpenTK.Vector3(DecimalVector vec)
             {
                 return new OpenTK.Vector3((float)vec.X, (float)vec.Y, (float)vec.Z);
@@ -77,6 +82,10 @@ namespace SIEngine
             public static DecimalVector operator +(DecimalVector first, DecimalVector second)
             {
                 return new DecimalVector(first.X + second.X, first.Y + second.Y, first.Z + second.Z, first.W + second.W);
+            }
+            public static DecimalVector operator -(DecimalVector first, DecimalVector second)
+            {
+                return new DecimalVector(first.X - second.X, first.Y - second.Y, first.Z - second.Z, first.W - second.W);
             }
             #endregion
         }

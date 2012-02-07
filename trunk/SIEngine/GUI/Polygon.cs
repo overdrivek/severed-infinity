@@ -33,6 +33,7 @@ namespace SIEngine
             /// </summary>
             public Color BackgroundColor { get; set; }
             public PolygonMode DrawMode { get; set; }
+            public BeginMode BeginMode { get; set; }
             public Vector ScaleFactor { get; set; }
 
             public Polygon()
@@ -40,6 +41,7 @@ namespace SIEngine
                 Vertices = new List<Vertex>();
                 BackgroundColor = Color.Black;
                 DrawMode = PolygonMode.Line;
+                BeginMode = BeginMode.Polygon;
                 Location = new Vector(0, 0);
                 Size = new Vector(0, 0);
                 ScaleFactor = new Vector(1, 1, 1);
@@ -47,7 +49,7 @@ namespace SIEngine
 
             public void PureDraw()
             {
-                GL.Begin(BeginMode.Polygon);
+                GL.Begin(BeginMode);
                 {
                     foreach (Vertex vertex in Vertices)
                         vertex.Draw();
@@ -67,7 +69,7 @@ namespace SIEngine
                     {
                         GL.Translate((Vector3)Location);
                         GL.Scale((Vector3)ScaleFactor);
-                        GL.Begin(BeginMode.Polygon);
+                        GL.Begin(BeginMode);
                         {
                             foreach (Vertex vertex in Vertices)
                             {

@@ -51,6 +51,7 @@
     <Compile Include="Graphics\GeneralGraphics.cs" />
     <Compile Include="Graphics\Gradient.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
+    <Compile Include="Graphics\Laser.cs" />
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Model Loading\MD2\MD2ModelLoader.cs" />
     <Compile Include="Graphics\Model Loading\MD2\MD2Normals.cs" />
@@ -97,7 +98,6 @@
     <Compile Include="Physics\PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

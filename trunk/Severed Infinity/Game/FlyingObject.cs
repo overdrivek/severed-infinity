@@ -19,15 +19,16 @@ namespace SI.Game
 {
     public class FlyingObject : Object
     {
-        public bool Paused
-        {
+        public bool Paused { get; set; }
+        /*{
             set
             {
                 if (!value)
                     MainTimer.Start();
                 else MainTimer.Stop();
             }
-        }
+        }*/
+        public bool Alive { get; set; }
         public PhysicsObject PhysicalBody { get; set; }
         public Timer MainTimer { get; set; }
 
@@ -64,6 +65,7 @@ namespace SI.Game
 
         public void Start()
         {
+            Alive = true;
             MainTimer.Start();
             BlurStack.Clear();
 
@@ -73,13 +75,22 @@ namespace SI.Game
             Parent.Add3DChildren(this);
         }
 
+        public void Kill()
+        {
+            MainTimer.Stop();
+            Alive = false;
+            Parent.Children3D.Remove(this);
+        }
+
         private void AnimationStep(object sedner, EventArgs evArgs)
         {
-            if (time >= Lifespan)
-            {
-                Parent.Children3D.Remove(this);
-                MainTimer.Stop();
-            }
+            if (Paused)
+                return;
+            PhysicalBody.ApplyNaturalForces();
+            PhysicalBody.ModulatePhysics();
+
+            if (time >= Lifespan && !Paused)
+                Kill();
             time++;
 
             Vector temp = BlurStack.Last.Value;
@@ -92,14 +103,16 @@ namespace SI.Game
             BlurStack.First().X = Location.X;
             BlurStack.First().Y = Location.Y;
             BlurStack.First().Z = Location.Z;
-            PhysicalBody.ApplyNaturalForces();
-            PhysicalBody.ModulatePhysics();
+
         }
 
         public override void Draw()
         {
             GeneralGraphics.EnableAlphaBlending();
-            bool stroke = Body.Stroke, rotate = Body.Rotate;
+            GeneralGraphics.UseDefaultShaderProgram();
+            if(ShaderProgram != null)
+                ShaderProgram.UseProgram();
+            bool rotate = Body.Rotate;
 
             GL.PushMatrix();
             {
@@ -108,10 +121,10 @@ namespace SI.Game
                 Body.Draw();
             }
             GL.PopMatrix();
+            GeneralGraphics.UseDefaultShaderProgram();
 
             float alpha = 0.6f;
-
-            Body.Stroke = false;
+            
             Body.Rotate = false;
                 foreach (var trail in BlurStack)
                 {
@@ -129,11 +142,9 @@ namespace SI.Game
                     alpha -= alphaStep;
                 }
 
-                Body.Stroke = stroke;
                 Body.Rotate = rotate;
 
             GeneralGraphics.DisableBlending();
-
         }
     }
 }

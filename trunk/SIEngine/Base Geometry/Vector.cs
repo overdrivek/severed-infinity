@@ -60,7 +60,10 @@ namespace SIEngine
             {
                 return new OpenTK.Vector3(vec.X, vec.Y, vec.Z);
             }
-
+            public static explicit operator DecimalVector(Vector vec)
+            {
+                return new DecimalVector((decimal)vec.X, (decimal)vec.Y, (decimal)vec.Z, (decimal)vec.W);
+            }
             public static explicit operator Normal(Vector vec)
             {
                 return new Normal(vec.X, vec.Y, vec.Z);
@@ -77,6 +80,10 @@ namespace SIEngine
             public static Vector operator+(Vector first, Vector second)
             {
                 return new Vector(first.X + second.X, first.Y + second.Y, first.Z + second.Z, first.W + second.W);
+            }
+            public static Vector operator-(Vector first, Vector second)
+            {
+                return new Vector(first.X - second.X, first.Y - second.Y, first.Z - second.Z, first.W - second.W);
             }
             #endregion
         }

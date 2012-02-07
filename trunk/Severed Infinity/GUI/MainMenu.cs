@@ -20,7 +20,6 @@ namespace SI.GUI
         private Credits credits;
         private float curShift = -10.0f, destShift = 100.0f, shiftIncr = 1.5f;
         public GameWindow ParentWindow { get; set; }
-        private IntroScene intro;
 
         public MainMenu(GameWindow window)
         {
@@ -28,15 +27,14 @@ namespace SI.GUI
             skybox = new Skybox();
             ParentWindow.Children3D.Add(skybox);
 
-            intro = new IntroScene(ParentWindow);
-
             play = new Button();
             play.ApplyStylishEffect();
             play.Text = "Play Game";
             play.Image = "data/img/bck.bmp";
             play.MouseClick += (pos) =>
             {
-                intro.Start();
+                Game.Game.PlayGame();
+
                 curShift = -12.0f;
                 destShift = 30.0f;
                 shiftIncr = 1.5f;

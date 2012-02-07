@@ -36,15 +36,13 @@ namespace SIEngine.Graphics
         /// <param name="path">The path to the RAW file with the heightmap
         /// values.</param>
         /// 
-        public Heightmap(string path, Color lowColor, Color hightColor, Vector mapScale)
+        public Heightmap(string path, Vector mapScale)
         {
-            HeightmapGradient = new Gradient(Color.LightBlue, Color.SandyBrown,
-                Color.Green, Color.DarkGray, Color.White);
+            HeightmapGradient = new Gradient(Color.DarkBlue, Color.Gray, Color.SandyBrown,
+                Color.Green, Color.White);
 
             SquareSize = 1;
             MapScale = mapScale;
-            LowColor = lowColor;
-            HighColor = hightColor;
             FromFile(path);
         }
 
@@ -102,7 +100,10 @@ namespace SIEngine.Graphics
 
         public override void Draw()
         {
-            GeneralGraphics.UseSimulatedLighting();
+            GeneralGraphics.UseDefaultShaderProgram();
+            GeneralGraphics.DisableBlending();
+            GeneralGraphics.DisableTexturing();
+            //GeneralGraphics.UseSimulatedLighting();
             GL.PushMatrix();
             {
                 GL.Translate(Location.X, Location.Y, Location.Z);
@@ -112,7 +113,6 @@ namespace SIEngine.Graphics
                 GL.CallList(list);
             }
             GL.PopMatrix();
-            GeneralGraphics.UseDefaultShaderProgram();
         }
     }
 }

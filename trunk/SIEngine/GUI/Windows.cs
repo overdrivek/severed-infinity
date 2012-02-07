@@ -89,12 +89,18 @@ namespace SIEngine
             public void AddChildren(params GUIObject[] children)
             {
                 foreach (GUIObject child in children)
+                {
                     Children.Add(child);
+                    child.Parent = this;
+                }
             }
             public void Add3DChildren(params Object[] children)
             {
                 foreach (Object child in children)
+                {
                     Children3D.Add(child);
+                    child.Parent = this;
+                }
             }
             #endregion
 
