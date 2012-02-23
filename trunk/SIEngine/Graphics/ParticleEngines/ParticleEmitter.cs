@@ -16,7 +16,7 @@ namespace SIEngine.Graphics.ParticleEngines
     public abstract class ParticleEmitter : Object
     {
         protected int MaxParticleCount { get; set; }
-        protected bool Paused { get; set; }
+        public bool Paused { get; set; }
 
         protected int elapsedTime;
         protected Timer MainTimer { get; set; }

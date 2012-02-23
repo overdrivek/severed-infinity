@@ -15,6 +15,9 @@ using Object = SIEngine.GUI.Object;
 
 namespace SI.Game.Cutscenes
 {
+    /// <summary>
+    /// Basic class to launch the Intro CutScene.
+    /// </summary>
     public class IntroScene : Object
     {
         private Button skip;
@@ -41,8 +44,16 @@ Apprentice: Boss, boss, here comes the first wave!!!
 Prepare!
 ";
         private int counter = 0;
+        /// <summary>
+        /// The parent of this control.
+        /// </summary>
         public GameWindow Parent { get; set; }
         
+        /// <summary>
+        /// Initializes this class along with all the buttons and models.
+        /// In general, this is a fairly slow process.
+        /// </summary>
+        /// <param name="parent">The parent of this control.</param>
         public IntroScene(GameWindow parent)
         {
             Parent = parent;
@@ -113,6 +124,10 @@ Prepare!
             skip.Visible = false;
         }
 
+        /// <summary>
+        /// Starts the cut scene. You 
+        /// should initialize it first.
+        /// </summary>
         public void Start()
         {
             Visible = true;
@@ -121,6 +136,9 @@ Prepare!
             Parent.State = Window.WindowState.Intro;
         }
 
+        /// <summary>
+        /// Ends the scene and launches the tutorial.
+        /// </summary>
         public void End()
         {
             timer.Stop();
@@ -132,9 +150,12 @@ Prepare!
             textControl.Text = "";
             fadeOut = 0f;
 
-            var tutorial = new Tutorial(Parent);
+            Game.StartTutorial();
         }
 
+        /// <summary>
+        /// Generic draw method.
+        /// </summary>
         public override void Draw()
         {
             if (!Visible)

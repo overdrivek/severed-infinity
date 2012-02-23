@@ -23,7 +23,10 @@ namespace SI.Game
         public int ShootInterval { get; set; }
         public int TargetScore { get; set; }
         public int CurrentScore { get; set; }
-        private Label scoreLabel, scoreText;
+        public int MissedLimit { get; set; }
+        public int CurrentlyMissed { get; set; }
+
+        private Label scoreLabel, scoreText, missedText, missedLabel;
         private List<FlyingObject> flyingObjects;
         private Explosion explosion = new Explosion(32, true);
         private Timer mainTimer = new Timer();
@@ -37,7 +40,16 @@ namespace SI.Game
                 Shoot();
             for (int i = 0; i < flyingObjects.Count; ++ i )
                 if (!flyingObjects[i].Alive)
+                {
+                    CurrentlyMissed++;
+                    missedLabel.Text = CurrentlyMissed.ToString() + "/" +
+                        MissedLimit.ToString();
+
+                    if (CurrentlyMissed >= MissedLimit)
+                        FailLevel();
+                    
                     flyingObjects.RemoveAt(i);
+                }
         }
 
         private void ExplodeObject(object sender, MouseEventArgs evArgs)
@@ -52,24 +64,30 @@ namespace SI.Game
             explosion.Location = pick.Location;
             explosion.Explode();
 
-            Console.WriteLine(flyingObjects.Count);
+            //update score in Score TableP
+            Game.Score[((FlyingObject)pick).ModelReference]++;
+
+            //Console.WriteLine(flyingObjects.Count);
             flyingObjects.Remove((FlyingObject)pick);
-            Console.WriteLine(flyingObjects.Count);
-            CurrentScore += 10 + GeneralMath.RandomInt() % 20;
+            //Console.WriteLine(flyingObjects.Count);
+            CurrentScore += ((FlyingObject)pick).ModelReference.score;
             scoreLabel.Text = CurrentScore.ToString() + "/" + TargetScore.ToString();
 
             if (CurrentScore >= TargetScore)
                 Complete();
         }
 
-        public Level(GameWindow parent, int shootInterval, int targetScore)
+        public Level(GameWindow parent, int shootInterval, int targetScore, int missedLimit)
         {
             CurrentScore = 0;
+            MissedLimit = missedLimit;
             TargetScore = targetScore;
             ShootInterval = shootInterval;
             explosion.Scale = .5f;
 
             Parent = parent;
+            
+            //score
             scoreLabel = new Label();
             scoreLabel.Location = new Vector(600, 10);
             scoreLabel.Text = "0/" + targetScore.ToString();
@@ -77,36 +95,69 @@ namespace SI.Game
             scoreText = new Label();
             scoreText.Text = "Score:";
             scoreText.Location = new Vector(500, 10);
+            
+            //missed
+            missedLabel = new Label();
+            missedLabel.Location = new Vector(600, 30);
+            missedLabel.Text = "0/" + missedLimit.ToString();
+
+            missedText = new Label();
+            missedText.Text = "Missed:";
+            missedText.Location = new Vector(500, 30);
 
             flyingObjects = new List<FlyingObject>();
             mainTimer.Interval = 10;
             mainTimer.Tick += AnimationStep;
 
-            Parent.AddChildren(scoreText, scoreLabel);
+            Parent.AddChildren(scoreText, scoreLabel, missedText, missedLabel);
             Parent.Add3DChildren(explosion);
 
             Completed = false;
         }
 
-        //OBJModel model = new OBJModel("data/models/cake/pie.obj");
-        //OBJModel model = new OBJModel("data/models/apple/apple.obj");
-        
         private void Shoot()
         {
-            var fObject = new FlyingObject(Parent, ModelManager.GetRandomModel(), 3);
+            //3 is the blur stack size
+            var managedModel = ModelManager.GetRandomModel();
+
+            var fObject = new FlyingObject(Parent, managedModel.model, 3);
             fObject.Location = new Vector(-10 + GeneralMath.RandomInt() % 20, -20f, 0f);
+            fObject.ModelReference = managedModel; 
             fObject.Start();
 
             flyingObjects.Add(fObject);
         }
 
+        public void HideInterface()
+        {
+            mainTimer.Stop();
+            Parent.Mouse.Move -= ExplodeObject;
+            Parent.Children.Remove(scoreLabel);
+            Parent.Children.Remove(scoreText);
+            Parent.Children.Remove(missedLabel);
+            Parent.Children.Remove(missedText);
+            Game.ShowGun(false);
+
+            Completed = true;
+        }
+
         public void Complete()
         {
             ModelManager.UnlockModel(Parent);
-            mainTimer.Stop();
-            Parent.Mouse.Move -= ExplodeObject;
+            HideInterface();
+        }
+        
+        public void FailLevel()
+        {
+            var info = new InfoBox(Parent, new Vector(200, 200), GameplayConstants.FailLevelMessage);
+            info.ButtonText = "Restart";
+            info.Show();
+            HideInterface();
 
-            Completed = true;
+            info.OKClicked += (pos) =>
+                {
+                    Game.RestartLevel();
+                };
         }
 
         public void Start()

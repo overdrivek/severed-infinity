@@ -28,6 +28,17 @@ namespace SIEngine.GUI
                 mainLabel.Text = value;
             }
         }
+        public string ButtonText
+        {
+            get
+            {
+                return buttonOk.Text;
+            }
+            set
+            {
+                buttonOk.Text = value;
+            }
+        }
 
         private Label mainLabel;
         private Button buttonOk;

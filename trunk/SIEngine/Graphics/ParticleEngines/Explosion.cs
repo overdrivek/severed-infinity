@@ -22,6 +22,7 @@ namespace SIEngine.Graphics.ParticleEngines
             shockEmitter = new ShockwaveParticleEmitter();
             debrisEmitter = new DebrisParticleEmitter(numParticles);
             Scale = 1f;
+            Visible = false;
         }
 
         public void Explode()
@@ -30,10 +31,16 @@ namespace SIEngine.Graphics.ParticleEngines
             shockEmitter.Start();
             if(HasDebris)
                 debrisEmitter.Start();
+            Visible = true;
         }
 
         public override void Draw()
         {
+            if (!Visible)
+                return;
+            if (explosionEmitter.Paused && debrisEmitter.Paused && shockEmitter.Paused)
+                Visible = false;
+
             GL.PushMatrix();
             {
                 GL.Translate(Location.X, Location.Y, Location.Z);

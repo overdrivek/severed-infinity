@@ -34,19 +34,13 @@ namespace SI
 {
     class EntryPoint
     {
-        static float logn(float x)
-        {
-            return (float)Math.Log(0.2, (x - 3 * x * x));
-        }
-
         static void Main(string[] Args)
         {
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
-            Game.Game.MainWindow = window;
             Camera.Zoom = -50m;
             Camera.ControlMode = Camera.Mode.Smooth;
-
+            
             //if (Properties.Settings.Default.unlockStatus == null)
             {
                 Properties.Settings.Default.unlockStatus = new bool[1 << 5];
@@ -60,31 +54,8 @@ namespace SI
 
             window.Menu = new MainMenu(window);
             window.GameMenu = new IngameMenu(window);
-
-            var button = new Button();
-            button.Text = "Unlock";
-            button.Location = new Vector(50, 20);
-            button.ApplyStylishEffect();
-            button.Image = "data/img/bck.bmp";
-            button.MouseClick += (pos) =>
-                {
-                    //ModelManager.UnlockModel(window);
-
-                    new Level(window, 30, 600).Start();
-                };
-
-            OBJModel model = new OBJModel("data/models/apple/apple.obj");
-            model.ScaleFactor = 0.03f;
-            Object obj = new Object();
-            obj.Body = model;
-            obj.Location = new Vector(-10, -10);
-            //window.Add3DChildren(obj);
-            model.CalculateReach();
-
-            Gun gun = new Gun();
-            window.Add3DChildren(gun);
-
-            //window.AddChildren(button);
+            Game.Game.MainWindow = window;
+            Game.Game.InitializeGame();
 
             window.Run(30);
         }

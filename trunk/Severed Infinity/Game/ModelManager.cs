@@ -15,13 +15,14 @@ namespace SI.Game
         public class ManagedModel
         {
             public ManagedModel(float rarity, OBJModel model, bool unlocked, string name,
-                string unlockMessage)
+                string unlockMessage, int score)
             {
                 this.rarity = rarity;
                 this.model = model;
                 this.unlocked = unlocked;
                 this.name = name;
                 this.unlockMessage = unlockMessage;
+                this.score = score;
             }
 
             public string unlockMessage;
@@ -29,6 +30,7 @@ namespace SI.Game
             public OBJModel model;
             public bool unlocked;
             public string name;
+            public int score;
         }
 
         public static int UnlockedModels { get; set; }
@@ -54,6 +56,7 @@ namespace SI.Game
             {
                 parent.Children3D.Remove(obj);
                 obj.Body.Rotate = false;
+                Game.EndLevel();
             };
             infoBox.ExclamationClicked += (pos) =>
             {
@@ -63,14 +66,40 @@ namespace SI.Game
 
         public static void UnlockModel(GameWindow parent)
         {
+            if (UnlockedModels >= modelBank.Count)
+            {
+                if (UnlockedModels == modelBank.Count + 7)
+                {
+                    Game.EndLevel();
+                    return;
+                }
+
+                var infoBox = new InfoBox(parent, new Vector(400, 300),
+                    "You have unlocked all\n" +
+                    "items. Kudos... \n" +
+                    "Now you can play\n" +
+                    "forever. You will\n" +
+                    "not see this message\n" +
+                    "again.");
+                infoBox.Show();
+                infoBox.OKClicked += (pos) =>
+                    {
+                        Game.EndLevel();
+                    };
+
+                UnlockedModels = modelBank.Count + 7;
+
+                return;
+            }
+
             modelBank[0].rarity -= modelBank[UnlockedModels].rarity;
             modelBank[UnlockedModels].unlocked = true;
 
             UnlockAnimation(parent);
-            //UnlockedModels++;
+            UnlockedModels++;
         }
 
-        public static OBJModel GetRandomModel()
+        public static ManagedModel GetRandomModel()
         {
             float sum = 1f;
             float random = GeneralMath.RandomFloat(0f, 1f);
@@ -81,7 +110,7 @@ namespace SI.Game
                 sum -= modelBank[i].rarity;
 
                 if (random >= min && random <= max)
-                    return modelBank[i].model;
+                    return modelBank[i];
             }
             return null;
         }
@@ -99,7 +128,7 @@ namespace SI.Game
             model.ScaleFactor = 0.03f;
             model.CalculateReach();
             modelBank.Add(new ModelManager.ManagedModel(1f, model,
-                Properties.Settings.Default.unlockStatus[i++], "Apple", ""));
+                Properties.Settings.Default.unlockStatus[i++], "Apple", "", 20));
             
 
             //second model
@@ -112,12 +141,12 @@ namespace SI.Game
             model.CalculateReach();
 
             modelBank.Add(new ModelManager.ManagedModel(.3f, model,
-                Properties.Settings.Default.unlockStatus[i++], "IPhone",
+                Properties.Settings.Default.unlockStatus[i++], "The cake is a lie",
                 "You have unlocked a pie!.\n"
                 + "Congrats. Now you can\n"
                 + "explode more than apples!\n"
                 + "Go on, explode it.\n"
-                + "Now, mate!"));
+                + "Now, mate!", 50));
             if (Properties.Settings.Default.unlockStatus[i - 1] == true)
                 modelBank[0].rarity -= modelBank[i - 1].rarity;
             

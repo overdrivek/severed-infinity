@@ -21,7 +21,7 @@ namespace SI.Game
         public GameWindow Parent { get; set; }
         public Vector StartingLocation { get; set; }
         
-        public int firstMessageTimeout = 10;
+        public int firstMessageTimeout = 8;
         public string[] Messages = 
             {
                 "This tutorial will teach\n" +
@@ -77,7 +77,7 @@ namespace SI.Game
             if (!Parent.MouseClicked)
                 return;
 
-            Object pick = Picking.RayCastPick(Parent, fObject);
+            Object pick = Picking.ColorPick(Parent, fObject);
             if (pick != fObject)
                 return;
 
@@ -96,7 +96,7 @@ namespace SI.Game
                     Camera.Location.Y = 0m;
                     Camera.Location.Z = -50m;
 
-                    Game.StartNextLevel(0);
+                    Game.StartNextLevel();
                 };
         }
 
@@ -125,7 +125,7 @@ namespace SI.Game
             obj.Velocity = fObject.PhysicalBody.Velocity;
             obj.ParentObject = physGui;
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 0; i < 8; ++i)
             {
                 obj.ModulatePhysics();
                 obj.ApplyNaturalForces();

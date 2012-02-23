@@ -17,8 +17,14 @@ using Object = SIEngine.GUI.Object;
 
 namespace SI.Game
 {
+    /// <summary>
+    /// Represents an object that flies through the scene.
+    /// </summary>
     public class FlyingObject : Object
     {
+        /// <summary>
+        /// True for paused, false otherwise.
+        /// </summary>
         public bool Paused { get; set; }
         /*{
             set
@@ -28,26 +34,66 @@ namespace SI.Game
                 else MainTimer.Stop();
             }
         }*/
+        /// <summary>
+        /// A reference to the managed model for this object.
+        /// </summary>
+        public ModelManager.ManagedModel ModelReference { get; set; }
+
+        /// <summary>
+        /// Indicates that the flying object is in the current
+        /// window and has not yet been exploded or completed
+        /// its life cycle.
+        /// </summary>
         public bool Alive { get; set; }
+
+        /// <summary>
+        /// The physical body of the object. Used to calculate
+        /// parabolic movement.
+        /// </summary>
         public PhysicsObject PhysicalBody { get; set; }
+
+        /// <summary>
+        /// Main animation timer.
+        /// </summary>
         public Timer MainTimer { get; set; }
 
         //blur
+
+        /// <summary>
+        /// Toggles the motion blur the model leaves behind itself.
+        /// </summary>
         public bool EnableMotionBlur { get; set; }
+
+        /// <summary>
+        /// Sets the length of the blur trail.
+        /// </summary>
         public int BlurStackSize { get; set; }
+
+        /// <summary>
+        /// The time, in milliseconds, which the object lives for.
+        /// </summary>
+        public int Lifespan { get; set; }
+
         private LinkedList<Vector> BlurStack { get; set; }
         private float alphaStep;
         private int time;
-        public int Lifespan { get; set; }
 
+        /// <summary>
+        /// Initializes an instance of this class, along with the values for
+        /// using it.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="model"></param>
+        /// <param name="blurStackSize"></param>
         public FlyingObject(GameWindow parent, OBJModel model, int blurStackSize)
         {
             Parent = parent;
             Lifespan = 100;
-
+            
             //blur
             BlurStackSize = blurStackSize;
             BlurStack = new LinkedList<Vector>();
+            EnableMotionBlur = true;
             alphaStep = .5f / BlurStackSize;
 
             PhysicalBody = new PhysicsObject();
@@ -84,6 +130,20 @@ namespace SI.Game
 
         private void AnimationStep(object sedner, EventArgs evArgs)
         {
+            if (EnableMotionBlur)
+            {
+                Vector temp = BlurStack.Last.Value;
+                BlurStack.RemoveLast();
+                BlurStack.AddFirst(temp);
+
+                if (BlurStack.First.Value == null)
+                    BlurStack.First.Value = new Vector(0f, 0f, 0f);
+
+                BlurStack.First().X = Location.X;
+                BlurStack.First().Y = Location.Y;
+                BlurStack.First().Z = Location.Z;
+            }
+
             if (Paused)
                 return;
             PhysicalBody.ApplyNaturalForces();
@@ -92,18 +152,6 @@ namespace SI.Game
             if (time >= Lifespan && !Paused)
                 Kill();
             time++;
-
-            Vector temp = BlurStack.Last.Value;
-            BlurStack.RemoveLast();
-            BlurStack.AddFirst(temp);
-
-            if (BlurStack.First.Value == null)
-                BlurStack.First.Value = new Vector(0f, 0f, 0f);
-
-            BlurStack.First().X = Location.X;
-            BlurStack.First().Y = Location.Y;
-            BlurStack.First().Z = Location.Z;
-
         }
 
         public override void Draw()
