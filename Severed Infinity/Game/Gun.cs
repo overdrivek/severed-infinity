@@ -40,6 +40,9 @@ namespace SI.Game
 
         public override void Draw()
         {
+            if (!Visible)
+                return;
+
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
             {

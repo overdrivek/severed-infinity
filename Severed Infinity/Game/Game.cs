@@ -16,49 +16,90 @@ namespace SI.Game
     {
         public static GameWindow MainWindow { get; set; }
         private static IntroScene intro;
-        private static Laser mainLaser;
+        private static Gun mainGun;
+        private static ScoreTable scoreTable;
 
+        public static Dictionary<ModelManager.ManagedModel, int> Score { get; set; }
         public static int CurrentScore { get; private set; }
         public static int CurrentLevel { get; set; }
         public static int[,] Levels = new int[,]
         {
-            {30, 600},
-            {40, 1200}
+            {30, 600, 20},
+            {40, 600, 15}
         };
 
         static Game()
         {
-            CurrentLevel = 0;
-
-            mainLaser = new Laser(new Vector(0f, 0f, 50), new Vector(0f, 0f, 0f));
-
-            MainWindow.Children3D.Add(mainLaser);
-            MainWindow.Mouse.Move += (o, e) =>
-            {
-                mainLaser.Visible = false;
-                if (MainWindow.MouseClicked)
-                    mainLaser.Visible = true;
-
-                Camera.CurrentMode = Camera.CameraMode.Overview;
-                Camera.DoCameraTransformation(MainWindow);
-                var unp = GeometryMath.UnProjectMouse(new Vector(MainWindow.Mouse.X,
-                    MainWindow.Mouse.Y));
-                mainLaser.Destination = new Vector(unp.X, unp.Y, 0f);
-            };
-            mainLaser.Visible = false;
         }
 
-        public static void StartNextLevel(int score)
+        public static void InitializeGame()
         {
-            var nextLevel = new Level(MainWindow, Levels[CurrentLevel, 0], Levels[CurrentLevel, 1]);
+            Console.WriteLine("init");
+
+            //initialize empty score table
+            Score = new Dictionary<ModelManager.ManagedModel, int>();
+            foreach (var model in ModelManager.modelBank)
+                Score.Add(model, 0);
+            scoreTable = new ScoreTable(MainWindow);
+
+            //for restart level to work, we set the current level to -1
+            CurrentLevel = -1;
+
+            mainGun = new Gun();
+            MainWindow.Add3DChildren(mainGun);
+            mainGun.Visible = false;
+
+        }
+
+        /// <summary>
+        /// Launches the default tutorial for this game.
+        /// </summary>
+        public static void StartTutorial()
+        {
+            var tutorial = new Tutorial(MainWindow);
+            mainGun.Visible = false;
+        }
+
+        /// <summary>
+        /// Starts the next level and launches a score table
+        /// to show the current score. You should have set the
+        /// values of the Score field beforehand.
+        /// </summary>
+        public static void StartNextLevel()
+        {
+            if (CurrentLevel + 1 < Levels.GetLength(0))
+                CurrentLevel++;
+
+            RestartLevel();
+        }
+
+        public static void RestartLevel()
+        {
+            var nextLevel = new Level(MainWindow, Levels[CurrentLevel, 0], Levels[CurrentLevel, 1],
+                Levels[CurrentLevel, 2]);
             nextLevel.Start();
 
-            mainLaser.Visible = true;
-            CurrentScore += score;
-            CurrentLevel++;
+            mainGun.Visible = true;
         }
 
+        public static void EndLevel()
+        {
+            scoreTable.Score = Score;
+            scoreTable.Visible = true;
+        }
 
+        /// <summary>
+        /// Sets the laser and gun visibility.
+        /// </summary>
+        /// <param name="visible">True for visible, false otherwise</param>
+        public static void ShowGun(bool visible)
+        {
+            mainGun.Visible = visible;
+        }
+
+        /// <summary>
+        /// Starts the game. Use only once in the beginning.
+        /// </summary>
         public static void PlayGame()
         {
             CheckProgress();
@@ -67,6 +108,9 @@ namespace SI.Game
             intro.Start();
         }
 
+        /// <summary>
+        /// Saves the current progress to the save file.
+        /// </summary>
         public static void SaveProgress()
         {
             

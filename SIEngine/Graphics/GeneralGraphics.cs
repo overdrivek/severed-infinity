@@ -18,6 +18,7 @@ namespace SIEngine.Graphics
         public static float AmbientLight = 32;
         public static ShaderProgram SimulatedLighting { get; set; }
         public static Texture ExclamationTexture { get; set; }
+        public static Texture BackgroundTexture { get; set; }
         public static Texture ExclamationMask { get; set; }
         public static Texture InfoBoxFrame { get; set; }
         
@@ -27,6 +28,7 @@ namespace SIEngine.Graphics
                 "data/effects/SimulatedLighting.frag");
             ExclamationTexture = new Texture("data/img/icons/exclamation.png");
             ExclamationMask = new Texture("data/img/icons/mask.png");
+            BackgroundTexture = new Texture("data/img/bck.bmp");
             InfoBoxFrame = new Texture("data/img/icons/frame.png");
         }
 
