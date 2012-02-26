@@ -31,5 +31,11 @@ namespace SIEngine.Other
 
         public const string InfoLogDirectory = "data/InfoLog.silog";
         public const string ErrorLogDirectory = "data/ErrorLog.silog";
+
+        public const float DefaultSoundVolume = 0.1f;
+        public const float DefaultMusicVolume = 0.3f;
+
+        public const float MaxMusicVolume = 0.3f;
+        public const float VolumeFadeOut = 0.003f;
     }
 }

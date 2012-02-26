@@ -77,6 +77,7 @@ namespace SI.Game
         private LinkedList<Vector> BlurStack { get; set; }
         private float alphaStep;
         private int time;
+        private float angleIncrement, currentAngle;
 
         /// <summary>
         /// Initializes an instance of this class, along with the values for
@@ -100,6 +101,8 @@ namespace SI.Game
             PhysicalBody.ParentObject = this;
             PhysicalBody.Velocity = new Vector(GeneralMath.RandomFloat(-0.7f, 0.7f),
                 GeneralMath.RandomFloat(1.5f, 2.5f), GeneralMath.RandomFloat(-0.5f, 0.5f));
+
+            angleIncrement = GeneralMath.RandomFloat(5.5f, 6.5f);
 
             Body = model;
 
@@ -148,6 +151,7 @@ namespace SI.Game
                 return;
             PhysicalBody.ApplyNaturalForces();
             PhysicalBody.ModulatePhysics();
+            currentAngle += angleIncrement;
 
             if (time >= Lifespan && !Paused)
                 Kill();
@@ -166,6 +170,7 @@ namespace SI.Game
             {
                 GL.Color4(Color.White);
                 GL.Translate(Location.X, Location.Y, Location.Z);
+                GL.Rotate(currentAngle, 1f, 0f, 0f);
                 Body.Draw();
             }
             GL.PopMatrix();
@@ -182,6 +187,8 @@ namespace SI.Game
                     GL.PushMatrix();
                     {
                         GL.Translate(trail.X, trail.Y, trail.Z);
+                        GL.Rotate(currentAngle, 1f, 0f, 0f);
+                        GL.Scale(alpha + .3f, alpha + .3f, alpha + .3f);
                         Body.Draw(Color.FromArgb((byte)(255 * alpha), Color.LightGray));
                     }
                     GL.PopMatrix();

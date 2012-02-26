@@ -33,9 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
-    <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
-    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.Compatibility, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -46,8 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\BackgroundMusic.cs" />
+    <Compile Include="Audio\GeneralAudio.cs" />
+    <Compile Include="Audio\Sound.cs" />
     <Compile Include="Base Geometry\DecimalVector.cs" />
     <Compile Include="Base Geometry\Normal.cs" />
+    <Compile Include="GUI\AudioNotificationControl.cs" />
     <Compile Include="Graphics\GeneralGraphics.cs" />
     <Compile Include="Graphics\Gradient.cs" />
     <Compile Include="Graphics\Heightmap.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Physics\PhysicsObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

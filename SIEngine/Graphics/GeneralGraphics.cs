@@ -8,6 +8,7 @@ using System.Drawing;
 using SIEngine.Other;
 using SIEngine.BaseGeometry;
 using SIEngine.Graphics.Shaders;
+using SIEngine.Graphics.ParticleEngines;
 
 namespace SIEngine.Graphics
 {
@@ -21,7 +22,7 @@ namespace SIEngine.Graphics
         public static Texture BackgroundTexture { get; set; }
         public static Texture ExclamationMask { get; set; }
         public static Texture InfoBoxFrame { get; set; }
-        
+
         static GeneralGraphics()
         {
             SimulatedLighting = new ShaderProgram("data/effects/SimulatedLighting.vert",

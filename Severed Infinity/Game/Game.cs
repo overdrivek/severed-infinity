@@ -6,6 +6,7 @@ using SIEngine.Graphics;
 using SI.Other;
 using SI.Game;
 using SIEngine.BaseGeometry;
+using SIEngine.Graphics.ParticleEngines;
 using SI.Game.Cutscenes;
 using SIEngine.Other;
 using OpenTK.Input;
@@ -19,13 +20,18 @@ namespace SI.Game
         private static Gun mainGun;
         private static ScoreTable scoreTable;
 
+        private static Explosion[] explosionPool;
+        private static int currentExplosion = 0;
+
         public static Dictionary<ModelManager.ManagedModel, int> Score { get; set; }
         public static int CurrentScore { get; private set; }
         public static int CurrentLevel { get; set; }
         public static int[,] Levels = new int[,]
         {
-            {30, 600, 20},
-            {40, 600, 15}
+            {25, 600, 20, 2},
+            {30, 800, 25, 3},
+            {35, 1000, 30, 4},
+            {40, 1200, 35, 5}
         };
 
         static Game()
@@ -35,6 +41,12 @@ namespace SI.Game
         public static void InitializeGame()
         {
             Console.WriteLine("init");
+
+            //initialize explosion pool
+            explosionPool = new Explosion[GameplayConstants.ExplosionPoolSize];
+            for (int i = 0; i < GameplayConstants.ExplosionPoolSize; ++i)
+                explosionPool[i] = new Explosion(32, true);
+            MainWindow.Add3DChildren(explosionPool);
 
             //initialize empty score table
             Score = new Dictionary<ModelManager.ManagedModel, int>();
@@ -49,6 +61,17 @@ namespace SI.Game
             MainWindow.Add3DChildren(mainGun);
             mainGun.Visible = false;
 
+        }
+
+        public static void ExplodeAt(Vector location, float scale)
+        {
+            explosionPool[currentExplosion].Scale = scale;
+            explosionPool[currentExplosion].Location = location;
+            explosionPool[currentExplosion].Explode();
+
+            currentExplosion++;
+            if (currentExplosion >= GameplayConstants.ExplosionPoolSize)
+                currentExplosion = 0;
         }
 
         /// <summary>
@@ -76,7 +99,7 @@ namespace SI.Game
         public static void RestartLevel()
         {
             var nextLevel = new Level(MainWindow, Levels[CurrentLevel, 0], Levels[CurrentLevel, 1],
-                Levels[CurrentLevel, 2]);
+                Levels[CurrentLevel, 2], Levels[CurrentLevel, 3]);
             nextLevel.Start();
 
             mainGun.Visible = true;

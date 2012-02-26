@@ -15,7 +15,7 @@ namespace SIEngine.GUI
         public static OpenTK.Graphics.TextPrinter printer;
         static TextPrinter()
         {
-            printer = new OpenTK.Graphics.TextPrinter(OpenTK.Graphics.TextQuality.Default);
+            printer = new OpenTK.Graphics.TextPrinter(OpenTK.Graphics.TextQuality.Medium);
             DefaultFont = new Font("Comic", 14, FontStyle.Bold, GraphicsUnit.Pixel);
             //TextFont = new Font("Arial", 14, FontStyle.Regular, GraphicsUnit.Pixel);
         }

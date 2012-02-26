@@ -19,25 +19,25 @@ namespace SI.Game
 {
     public class Level
     {
-        private int currentTime = 0;
+        private int currentTime = 0, shootQuant;
         public int ShootInterval { get; set; }
         public int TargetScore { get; set; }
         public int CurrentScore { get; set; }
         public int MissedLimit { get; set; }
         public int CurrentlyMissed { get; set; }
+        public bool Completed { get; private set; }
 
         private Label scoreLabel, scoreText, missedText, missedLabel;
         private List<FlyingObject> flyingObjects;
-        private Explosion explosion = new Explosion(32, true);
         private Timer mainTimer = new Timer();
         public GameWindow Parent;
-        public bool Completed { get; private set; }
         
         private void AnimationStep(object sender, EventArgs evArgs)
         {
             currentTime++;
             if (currentTime % ShootInterval == 0)
-                Shoot();
+                for (int i = 0; i < shootQuant; ++ i)
+                    Shoot();
             for (int i = 0; i < flyingObjects.Count; ++ i )
                 if (!flyingObjects[i].Alive)
                 {
@@ -61,8 +61,7 @@ namespace SI.Game
             if (pick == null)
                 return;
             ((FlyingObject)pick).Kill();
-            explosion.Location = pick.Location;
-            explosion.Explode();
+            Game.ExplodeAt(pick.Location, .5f);
 
             //update score in Score TableP
             Game.Score[((FlyingObject)pick).ModelReference]++;
@@ -77,13 +76,22 @@ namespace SI.Game
                 Complete();
         }
 
-        public Level(GameWindow parent, int shootInterval, int targetScore, int missedLimit)
+        /// <summary>
+        /// Initializes a new level.
+        /// </summary>
+        /// <param name="parent">The parent window.</param>
+        /// <param name="shootInterval">The interval between shooting items.</param>
+        /// <param name="targetScore">The score to be reached before winning the level.</param>
+        /// <param name="missedLimit">The items missed before you fail the level.</param>
+        /// <param name="shootQ">The numbers of objects shot at once.</param>
+        public Level(GameWindow parent, int shootInterval, int targetScore, int missedLimit,
+            int shootQ)
         {
-            CurrentScore = 0;
+            CurrentScore = 500;
             MissedLimit = missedLimit;
             TargetScore = targetScore;
             ShootInterval = shootInterval;
-            explosion.Scale = .5f;
+            shootQuant = shootQ;
 
             Parent = parent;
             
@@ -110,7 +118,6 @@ namespace SI.Game
             mainTimer.Tick += AnimationStep;
 
             Parent.AddChildren(scoreText, scoreLabel, missedText, missedLabel);
-            Parent.Add3DChildren(explosion);
 
             Completed = false;
         }
