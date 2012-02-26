@@ -158,8 +158,9 @@ namespace SIEngine
                 Camera.DoCameraTransformation(this);
 
                 foreach (Object child in this.Children3D)
-                    if (child.Visible)
+                    if(child.Visible)
                         child.Draw();
+                     
                 foreach (GUIObject control3d in this.Controls3D)
                     if (control3d.Visible)
                         control3d.Draw();

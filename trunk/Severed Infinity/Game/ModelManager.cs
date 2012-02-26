@@ -132,7 +132,6 @@ namespace SI.Game
             
 
             //second model
-            i++;
             model = new OBJModel("data/models/cake/pie.obj");
             
             model.ScaleFactor = 0.003f;
@@ -150,6 +149,24 @@ namespace SI.Game
             if (Properties.Settings.Default.unlockStatus[i - 1] == true)
                 modelBank[0].rarity -= modelBank[i - 1].rarity;
             
+            //third model
+            model = new OBJModel("data/models/banana/banana.obj");
+
+            model.ScaleFactor = 0.04f;
+            model.Stroke = false;
+            model.ApplyOriginalObjectColor = true;
+            model.CalculateReach();
+
+            modelBank.Add(new ModelManager.ManagedModel(.3f, model,
+                Properties.Settings.Default.unlockStatus[i++], "A banana",
+                "You have unlocked a banana!.\n"
+                + "Congrats. Now you can\n"
+                + "explode more than cakes!\n"
+                + "Go on, explode it.\n"
+                + "Now, mate!", 50));
+            if (Properties.Settings.Default.unlockStatus[i - 1] == true)
+                modelBank[0].rarity -= modelBank[i - 1].rarity;
+
             UnlockedModels = 1;
         }
     }

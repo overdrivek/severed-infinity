@@ -29,6 +29,7 @@ using SIEngine.Input;
 using Key = OpenTK.Input.Key;
 using SIEngine.Graphics.Rendering;
 using SIEngine.Other;
+using SIEngine.Audio;
 
 namespace SI
 {
@@ -36,11 +37,18 @@ namespace SI
     {
         static void Main(string[] Args)
         {
+            //loads audio files
+            GeneralAudio.LoadSound("data/audio/hmn.wav", "Include4eto - Hindered No More");
+            GeneralAudio.LoadSound("data/audio/layla.wav", "Eric Clapton - Layla");
+            BackgroundMusic.AddSongs("Include4eto - Hindered No More", "Eric Clapton - Layla");
+
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -50m;
             Camera.ControlMode = Camera.Mode.Smooth;
-            
+
+            BackgroundMusic.LinkToWindow(window);
+
             //if (Properties.Settings.Default.unlockStatus == null)
             {
                 Properties.Settings.Default.unlockStatus = new bool[1 << 5];
@@ -56,6 +64,21 @@ namespace SI
             window.GameMenu = new IngameMenu(window);
             Game.Game.MainWindow = window;
             Game.Game.InitializeGame();
+
+            var button = new Button();
+            button.ButtonEffect.OverShadow = true;
+            button.ButtonEffect.BorderEffect = true;
+            //button.ApplyStylishEffect();
+            
+            button.Text = "Play";
+            button.Location = new Vector(500, 500);
+
+            button.MouseClick += (pos) =>
+                {
+                    //Game.Game.StartNextLevel();
+                    BackgroundMusic.NextSong();
+                };
+            window.Children.Add(button);
 
             window.Run(30);
         }
