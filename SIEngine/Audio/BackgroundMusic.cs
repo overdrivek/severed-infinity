@@ -33,8 +33,10 @@ namespace SIEngine.Audio
             mainTimer = new Timer();
             mainTimer.Interval = 10;
             mainTimer.Tick += FadeOutStep;
+            mainTimer.Start();
 
             notificationControl = new AudioNotificationControl();
+            notificationControl.Visible = false;
         }
 
         /// <summary>
@@ -55,9 +57,15 @@ namespace SIEngine.Audio
 
         private static void FadeOutStep(object sender, EventArgs evArgs)
         {
+            if (CurrentSound != null && !CurrentSound.Playing)
+                NextSong();
+
+            if (!notificationControl.Visible)
+                return;
+
             if (currentVolume <= 0)
             {
-                mainTimer.Stop();
+                //mainTimer.Stop();
                 if (previousSound != null)
                     GeneralAudio.StopSound(previousSound.Name);
 
@@ -75,7 +83,7 @@ namespace SIEngine.Audio
         private static void FadeOut()
         {
             currentVolume = GameConstants.MaxMusicVolume;
-            mainTimer.Start();
+            //mainTimer.Start();
 
             GeneralAudio.PlaySound(CurrentSound.Name);
             CurrentSound.Volume = 0f;

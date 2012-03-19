@@ -40,8 +40,16 @@ namespace SI
             //loads audio files
             GeneralAudio.LoadSound("data/audio/hmn.wav", "Include4eto - Hindered No More");
             GeneralAudio.LoadSound("data/audio/layla.wav", "Eric Clapton - Layla");
+            GeneralAudio.LoadSound("data/audio/exp/1.wav", "1");
+            GeneralAudio.LoadSound("data/audio/exp/2.wav", "2");
+            GeneralAudio.LoadSound("data/audio/exp/3.wav", "3");
+            GeneralAudio.LoadSound("data/audio/exp/4.wav", "4");
+            GeneralAudio.LoadSound("data/audio/exp/5.wav", "5");
+            GeneralAudio.LoadSound("data/audio/exp/6.wav", "6");
+            GeneralAudio.LoadSound("data/audio/exp/7.wav", "7");
+            GeneralAudio.LoadSound("data/audio/exp.wav", "8");
             BackgroundMusic.AddSongs("Include4eto - Hindered No More", "Eric Clapton - Layla");
-
+            
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -50m;
@@ -49,7 +57,7 @@ namespace SI
 
             BackgroundMusic.LinkToWindow(window);
 
-            //if (Properties.Settings.Default.unlockStatus == null)
+            if (Properties.Settings.Default.unlockStatus == null)
             {
                 Properties.Settings.Default.unlockStatus = new bool[1 << 5];
                 for (int i = 0; i < Properties.Settings.Default.unlockStatus.Length; ++ i)
@@ -71,14 +79,16 @@ namespace SI
             //button.ApplyStylishEffect();
             
             button.Text = "Play";
-            button.Location = new Vector(500, 500);
+            button.Location = new Vector(50, 50);
 
             button.MouseClick += (pos) =>
                 {
                     //Game.Game.StartNextLevel();
                     BackgroundMusic.NextSong();
                 };
+            
             window.Children.Add(button);
+
 
             window.Run(30);
         }

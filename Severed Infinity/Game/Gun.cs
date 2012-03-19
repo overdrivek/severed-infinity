@@ -68,6 +68,7 @@ namespace SI.Game
                 mainLaser.Location.Y = -19f - 4f * (float)Math.Cos(zAngle);
             }
             GL.PopMatrix();
+            mainLaser.trail.Draw();
 
             //if(Parent.GetType().IsAssignableFrom(typeof(Window)))
             if(typeof(Window).IsAssignableFrom(Parent.GetType()))

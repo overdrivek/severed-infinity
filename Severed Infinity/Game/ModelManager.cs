@@ -6,6 +6,7 @@ using SIEngine.Graphics;
 using SIEngine.Other;
 using SIEngine.GUI;
 using SIEngine.BaseGeometry;
+using SI.Properties;
 using Object = SIEngine.GUI.Object;
 
 namespace SI.Game
@@ -94,6 +95,8 @@ namespace SI.Game
 
             modelBank[0].rarity -= modelBank[UnlockedModels].rarity;
             modelBank[UnlockedModels].unlocked = true;
+            Settings.Default.unlockStatus[UnlockedModels] = true;
+            Settings.Default.Save();
 
             UnlockAnimation(parent);
             UnlockedModels++;
@@ -121,6 +124,7 @@ namespace SI.Game
 
             modelBank = new List<ManagedModel>();
             OBJModel model;
+            UnlockedModels = 1;
             //first model
             
             model = new OBJModel("data/models/apple/apple.obj");
@@ -147,8 +151,11 @@ namespace SI.Game
                 + "Go on, explode it.\n"
                 + "Now, mate!", 50));
             if (Properties.Settings.Default.unlockStatus[i - 1] == true)
+            {
                 modelBank[0].rarity -= modelBank[i - 1].rarity;
-            
+                UnlockedModels++;
+            }
+
             //third model
             model = new OBJModel("data/models/banana/banana.obj");
 
@@ -165,9 +172,11 @@ namespace SI.Game
                 + "Go on, explode it.\n"
                 + "Now, mate!", 50));
             if (Properties.Settings.Default.unlockStatus[i - 1] == true)
+            {
                 modelBank[0].rarity -= modelBank[i - 1].rarity;
+                UnlockedModels++;
+            }
 
-            UnlockedModels = 1;
         }
     }
 }

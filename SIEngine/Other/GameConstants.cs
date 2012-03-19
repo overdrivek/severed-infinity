@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SIEngine.Other
+﻿namespace SIEngine.Other
 {
     public static class GameConstants
     { 
@@ -32,7 +27,7 @@ namespace SIEngine.Other
         public const string InfoLogDirectory = "data/InfoLog.silog";
         public const string ErrorLogDirectory = "data/ErrorLog.silog";
 
-        public const float DefaultSoundVolume = 0.1f;
+        public const float DefaultSoundVolume = 0.3f;
         public const float DefaultMusicVolume = 0.3f;
 
         public const float MaxMusicVolume = 0.3f;

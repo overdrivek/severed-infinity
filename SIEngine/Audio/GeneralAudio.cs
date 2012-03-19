@@ -5,6 +5,7 @@ using System.Text;
 using OpenTK.Audio;
 using System.IO;
 using System.Diagnostics;
+using SIEngine.Graphics.ParticleEngines;
 using SIEngine.Other;
 
 namespace SIEngine.Audio
@@ -109,7 +110,7 @@ namespace SIEngine.Audio
             if (!Sounds.TryGetValue(name, out sound))
                 return;
             
-            AL.SourcePlay(sound.Source);
+            AL.SourceStop(sound.Source);
         }
 
         private static AudioContext Context;

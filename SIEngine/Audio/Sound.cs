@@ -15,6 +15,14 @@ namespace SIEngine.Audio
         public int BitsPerSample { get; set; }
         public string Name { get; set; }
 
+        public bool Playing
+        {
+            get
+            {
+                return AL.GetSourceState(Source) == ALSourceState.Playing;
+            }
+        }
+
         private float volume;
         public float Volume
         {
