@@ -8,6 +8,7 @@ using SIEngine.Other;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using SIEngine.Graphics.ParticleEngines;
 using SIEngine.Graphics.Rendering;
 using Object = SIEngine.GUI.Object;
 
@@ -26,6 +27,7 @@ namespace SIEngine.Graphics
         /// </summary>
         public float Length { get; set; }
         private List<Vertex> vertices;
+        public ParticleTrailEmitter trail = new ParticleTrailEmitter(100, Color.Red, 1000);
 
         public Laser(Vector location, Vector destination)
         {
@@ -37,7 +39,13 @@ namespace SIEngine.Graphics
         public override void Draw()
         {
             if (!Visible)
+            {
+                if (!trail.Paused)
+                    trail.Pause();
+
                 return;
+            }
+            trail.Start();
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.PushMatrix();
@@ -53,6 +61,9 @@ namespace SIEngine.Graphics
                     Destination.Draw();
                 }
                 GL.End();
+
+                trail.Location = Destination;
+                trail.LaunchParticle();
             }
             GL.PopMatrix();
         }

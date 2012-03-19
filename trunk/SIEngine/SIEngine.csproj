@@ -50,6 +50,7 @@
     <Compile Include="Audio\Sound.cs" />
     <Compile Include="Base Geometry\DecimalVector.cs" />
     <Compile Include="Base Geometry\Normal.cs" />
+    <Compile Include="Graphics\ParticleEngines\ParticleTrailEmitter.cs" />
     <Compile Include="GUI\AudioNotificationControl.cs" />
     <Compile Include="Graphics\GeneralGraphics.cs" />
     <Compile Include="Graphics\Gradient.cs" />

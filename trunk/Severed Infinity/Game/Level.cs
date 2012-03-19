@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SIEngine.GUI;
 using SIEngine.BaseGeometry;
-using SIEngine.Graphics;
 using SI.Other;
 using SIEngine.Input;
-using SIEngine.Graphics.ParticleEngines;
 using SIEngine.Other;
-using SIEngine.Physics;
-using SI.Game;
+using SIEngine.Audio;
 using OpenTK.Input;
 using Timer = System.Windows.Forms.Timer;
 using Object = SIEngine.GUI.Object;
@@ -46,8 +41,12 @@ namespace SI.Game
                         MissedLimit.ToString();
 
                     if (CurrentlyMissed >= MissedLimit)
+                    {
                         FailLevel();
-                    
+                        return;
+                    }
+
+                    flyingObjects[i].Kill();
                     flyingObjects.RemoveAt(i);
                 }
         }
@@ -66,6 +65,7 @@ namespace SI.Game
             //update score in Score TableP
             Game.Score[((FlyingObject)pick).ModelReference]++;
 
+            GeneralAudio.PlaySound((1 + GeneralMath.RandomInt() % 8).ToString());
             //Console.WriteLine(flyingObjects.Count);
             flyingObjects.Remove((FlyingObject)pick);
             //Console.WriteLine(flyingObjects.Count);
@@ -87,7 +87,7 @@ namespace SI.Game
         public Level(GameWindow parent, int shootInterval, int targetScore, int missedLimit,
             int shootQ)
         {
-            CurrentScore = 500;
+            CurrentScore = 0;
             MissedLimit = missedLimit;
             TargetScore = targetScore;
             ShootInterval = shootInterval;
@@ -161,10 +161,7 @@ namespace SI.Game
             info.Show();
             HideInterface();
 
-            info.OKClicked += (pos) =>
-                {
-                    Game.RestartLevel();
-                };
+            info.OKClicked += (pos) => Game.RestartLevel();
         }
 
         public void Start()

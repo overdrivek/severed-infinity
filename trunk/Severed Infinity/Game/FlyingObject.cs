@@ -89,7 +89,7 @@ namespace SI.Game
         public FlyingObject(GameWindow parent, OBJModel model, int blurStackSize)
         {
             Parent = parent;
-            Lifespan = 100;
+            Lifespan = 50;
             
             //blur
             BlurStackSize = blurStackSize;
