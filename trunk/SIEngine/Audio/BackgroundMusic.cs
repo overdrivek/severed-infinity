@@ -18,6 +18,7 @@ namespace SIEngine.Audio
     /// </summary>
     public static class BackgroundMusic
     {
+        public static bool Enabled { get; set; }
         private static Timer mainTimer;
         private static float currentVolume;
         private static Sound previousSound;
@@ -96,10 +97,33 @@ namespace SIEngine.Audio
         }
 
         /// <summary>
+        /// Stops the current track and prevents other from
+        /// starting.
+        /// </summary>
+        public static void StopPlayback()
+        {
+            Enabled = false;
+            if(CurrentSound != null)
+                GeneralAudio.StopSound(CurrentSound.Name);
+        }
+
+        /// <summary>
+        /// Starts playing from a random song.
+        /// </summary>
+        public static void StartPlayback()
+        {
+            Enabled = true;
+            NextSong();
+        }
+
+        /// <summary>
         /// Plays a random song from the playlist.
         /// </summary>
         public static void NextSong()
         {
+            if (!Enabled)
+                return;
+
             int index = Playlist.IndexOf(CurrentSound);
             int song = index;
 

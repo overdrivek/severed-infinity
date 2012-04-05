@@ -85,21 +85,26 @@ namespace SIEngine
                 GL.Viewport(0, 0, this.Width, this.Height);
             }
 
+            //Note: in the below function it is imperative that
+            //we set the parent before drawing the control.
+            //In case the control wants to use the property
+            //the program will crash.
+
             #region Management
             public void AddChildren(params GUIObject[] children)
             {
                 foreach (GUIObject child in children)
                 {
-                    Children.Add(child);
                     child.Parent = this;
+                    Children.Add(child);
                 }
             }
             public void Add3DChildren(params Object[] children)
             {
                 foreach (Object child in children)
                 {
-                    Children3D.Add(child);
                     child.Parent = this;
+                    Children3D.Add(child);
                 }
             }
             #endregion

@@ -47,7 +47,7 @@ Prepare!
         /// <summary>
         /// The parent of this control.
         /// </summary>
-        public GameWindow Parent { get; set; }
+        public new GameWindow Parent { get; set; }
         
         /// <summary>
         /// Initializes this class along with all the buttons and models.

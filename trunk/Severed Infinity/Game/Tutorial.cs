@@ -13,6 +13,7 @@ using SIEngine.Physics;
 using SI.Game;
 using OpenTK.Input;
 using Object = SIEngine.GUI.Object;
+using Timer = System.Windows.Forms.Timer;
 
 namespace SI.Game
 {
@@ -42,6 +43,7 @@ namespace SI.Game
         private int currentTime = 0;
         private FlyingObject fObject;
         private Explosion explosion = new Explosion(16, true);
+        private Timer timer;
         private bool firstTimeout = false;
 
         private void AnimationStep(object sender, EventArgs evArgs)
@@ -66,18 +68,18 @@ namespace SI.Game
                         Camera.StopRotation();
                         Camera.MoveTo(new DecimalVector(0m, 0m, 50m), 40);
                         Camera.LookAt(new DecimalVector(0m, 0m, 0m), 40);
-                        Parent.Mouse.Move += ExplodeObject;
+                        timer.Tick += ExplodeObject;
                     };
                 intro.Show();
             }
         }
 
-        private void ExplodeObject(object sender, MouseEventArgs evArgs)
+        private void ExplodeObject(object sender, EventArgs evArgs)
         {
             if (!Parent.MouseClicked)
                 return;
 
-            Object pick = Picking.ColorPick(Parent, fObject);
+            Object pick = Picking.RayCastPick(Parent, fObject);
             if (pick != fObject)
                 return;
 
@@ -85,7 +87,8 @@ namespace SI.Game
             explosion.Location = fObject.Location;
             explosion.Explode();
 
-            Parent.Mouse.Move -= ExplodeObject;
+            timer.Stop();
+            timer.Dispose();
             Parent.Children3D.Remove(fObject);
 
             var info = new InfoBox(Parent, new Vector(200, 200), Messages[2]);
@@ -135,7 +138,7 @@ namespace SI.Game
                 (decimal)physGui.Location.Y, (decimal)physGui.Location.Z + 10);
             Camera.MoveTo(target, 60);
 
-            var timer = new System.Windows.Forms.Timer();
+            timer = new Timer();
             timer.Interval = 10;
             timer.Tick += AnimationStep;
             timer.Start();

@@ -55,6 +55,8 @@
     <Compile Include="GUI\Credits.cs" />
     <Compile Include="GUI\GameWindow.cs" />
     <Compile Include="GUI\IngameMenu.cs" />
+    <Compile Include="GUI\PlayGameMenu.cs" />
+    <Compile Include="GUI\SettingsMenu.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="GUI\MainMenu.cs" />
     <Compile Include="Other\GameplayConstants.cs" />

@@ -5,7 +5,9 @@ using System.Text;
 using SIEngine.Graphics;
 using SI.Other;
 using SI.Game;
+using SI.Properties;
 using SIEngine.BaseGeometry;
+using SIEngine.GUI;
 using SIEngine.Graphics.ParticleEngines;
 using SI.Game.Cutscenes;
 using SIEngine.Other;
@@ -16,6 +18,13 @@ namespace SI.Game
     public static class Game
     {
         public static GameWindow MainWindow { get; set; }
+        public static bool ShowingScores
+        {
+            get
+            {
+                return scoreTable.Visible;
+            }
+        }
         private static IntroScene intro;
         private static Gun mainGun;
         private static ScoreTable scoreTable;
@@ -26,6 +35,7 @@ namespace SI.Game
         public static Dictionary<ModelManager.ManagedModel, int> Score { get; set; }
         public static int CurrentScore { get; private set; }
         public static int CurrentLevel { get; set; }
+        public static Level ActualLevel { get; set; }
         public static int[,] Levels = new int[,]
         {
             {25, 600, 20, 2},
@@ -40,8 +50,6 @@ namespace SI.Game
 
         public static void InitializeGame()
         {
-            Console.WriteLine("init");
-
             //initialize explosion pool
             explosionPool = new Explosion[GameplayConstants.ExplosionPoolSize];
             for (int i = 0; i < GameplayConstants.ExplosionPoolSize; ++i)
@@ -58,9 +66,11 @@ namespace SI.Game
             CurrentLevel = -1;
 
             mainGun = new Gun();
+            mainGun.Parent = MainWindow;
             MainWindow.Add3DChildren(mainGun);
             mainGun.Visible = false;
 
+            LoadGame();
         }
 
         public static void ExplodeAt(Vector location, float scale)
@@ -101,14 +111,37 @@ namespace SI.Game
             var nextLevel = new Level(MainWindow, Levels[CurrentLevel, 0], Levels[CurrentLevel, 1],
                 Levels[CurrentLevel, 2], Levels[CurrentLevel, 3]);
             nextLevel.Start();
+            ActualLevel = nextLevel;
 
             mainGun.Visible = true;
         }
 
         public static void EndLevel()
         {
+            SaveProgress();
+
+            scoreTable.Playing = true;
             scoreTable.Score = Score;
             scoreTable.Visible = true;
+        }
+
+        /// <summary>
+        /// Shows the scores when not playing the game.
+        /// </summary>
+        public static void ShowScores()
+        {
+            scoreTable.Playing = false;
+
+            scoreTable.Score = Score;
+            scoreTable.Visible = true;
+        }
+
+        /// <summary>
+        /// Um...well.. duh?
+        /// </summary>
+        public static void HideScores()
+        {
+            scoreTable.Visible = false;
         }
 
         /// <summary>
@@ -123,12 +156,33 @@ namespace SI.Game
         /// <summary>
         /// Starts the game. Use only once in the beginning.
         /// </summary>
-        public static void PlayGame()
+        public static void NewGame()
         {
-            CheckProgress();
-            //start game or display new game/continue menu
             intro = new IntroScene(MainWindow);
             intro.Start();
+        }
+
+        /// <summary>
+        /// Resumes the game from the level saved in the settings.
+        /// If that is -1, the tutorial is started.
+        /// </summary>
+        public static void ResumeGame()
+        {
+            LoadGame();
+
+            MainWindow.State = Window.WindowState.Game;
+            StartNextLevel();   
+        }
+
+        /// <summary>
+        /// Loads the game from the save file.
+        /// </summary>
+        public static void LoadGame()
+        {
+            CurrentLevel = Settings.Default.CurrentLevel;
+
+            for (int i = 0; i < Score.Count; ++i)
+                Score[Score.ElementAt(i).Key] = Settings.Default.itemsShot[i];
         }
 
         /// <summary>
@@ -136,7 +190,23 @@ namespace SI.Game
         /// </summary>
         public static void SaveProgress()
         {
-            
+            int i = 0;
+            foreach (var entry in Score)
+            {
+                Settings.Default.itemsShot[i] = entry.Value;
+                i++;
+            }
+
+            Settings.Default.CurrentLevel = CurrentLevel;
+            Settings.Default.Save();
+        }
+
+        public static void QuitLevel()
+        {
+            if (ActualLevel == null)
+                return;
+
+            ActualLevel.FailLevel(false);
         }
 
         /// <summary>
@@ -145,7 +215,30 @@ namespace SI.Game
         /// <returns>True if you have a saved game.</returns>
         public static bool CheckProgress()
         {
-            return false;
+            return Settings.Default.CurrentLevel != -1;
+        }
+
+        /// <summary>
+        /// Deletes the save game file.
+        /// </summary>
+        /// <param name="deleteScores">If true, resets the high scores to 0.</param>
+        public static void DeleteProgress(bool deleteScores = true)
+        {
+            Settings.Default.unlockStatus = new bool[1 << 5];
+            for (int i = 0; i < Settings.Default.unlockStatus.Length; ++i)
+                Settings.Default.unlockStatus[i] = false;
+            Settings.Default.unlockStatus[0] = true;
+            Settings.Default.CurrentLevel = -1;
+
+            if (deleteScores)
+            {
+                Settings.Default.itemsShot = new int[ModelManager.modelBank.Count];
+
+                for (int i = 0; i < Settings.Default.itemsShot.Length; ++i)
+                    Settings.Default.itemsShot[i] = 0;
+            }
+
+            Settings.Default.Save();
         }
     }
 }
