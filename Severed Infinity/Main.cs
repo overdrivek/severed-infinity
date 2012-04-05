@@ -13,6 +13,7 @@ using SIEngine.BaseGeometry;
 using SIEngine.Physics;
 using System.Threading;
 using SI.Game;
+using SI.Properties;
 using Vector = SIEngine.BaseGeometry.Vector;
 using Button = SIEngine.GUI.Button;
 using TextBox = SIEngine.GUI.TextBox;
@@ -49,6 +50,9 @@ namespace SI
             GeneralAudio.LoadSound("data/audio/exp/7.wav", "7");
             GeneralAudio.LoadSound("data/audio/exp.wav", "8");
             BackgroundMusic.AddSongs("Include4eto - Hindered No More", "Eric Clapton - Layla");
+
+            if (Settings.Default.MusicStatus)
+                BackgroundMusic.StartPlayback();
             
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
@@ -56,39 +60,14 @@ namespace SI
             Camera.ControlMode = Camera.Mode.Smooth;
 
             BackgroundMusic.LinkToWindow(window);
-
-            if (Properties.Settings.Default.unlockStatus == null)
-            {
-                Properties.Settings.Default.unlockStatus = new bool[1 << 5];
-                for (int i = 0; i < Properties.Settings.Default.unlockStatus.Length; ++ i)
-                    Properties.Settings.Default.unlockStatus[i] = false;
-                Properties.Settings.Default.unlockStatus[0] = true;
-                Console.WriteLine("crap");
-
-                Properties.Settings.Default.Save();
-            }
-
             window.Menu = new MainMenu(window);
+
+            if (Settings.Default.unlockStatus == null || Settings.Default.itemsShot == null)
+                Game.Game.DeleteProgress();
+
             window.GameMenu = new IngameMenu(window);
             Game.Game.MainWindow = window;
             Game.Game.InitializeGame();
-
-            var button = new Button();
-            button.ButtonEffect.OverShadow = true;
-            button.ButtonEffect.BorderEffect = true;
-            //button.ApplyStylishEffect();
-            
-            button.Text = "Play";
-            button.Location = new Vector(50, 50);
-
-            button.MouseClick += (pos) =>
-                {
-                    //Game.Game.StartNextLevel();
-                    BackgroundMusic.NextSong();
-                };
-            
-            window.Children.Add(button);
-
 
             window.Run(30);
         }

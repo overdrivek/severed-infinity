@@ -9,7 +9,6 @@ using SIEngine.BaseGeometry;
 using System.IO;
 using System.Text;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 using SI.GUI;
 using SI.Properties;
 using SI.Other;

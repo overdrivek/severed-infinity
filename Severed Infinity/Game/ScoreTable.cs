@@ -22,9 +22,15 @@ namespace SI.Game
         /// and the second is a reference to the model.
         /// </summary>
         public Dictionary<ModelManager.ManagedModel, int> Score { get; set; }
-        
-        public ScoreTable(Window parent)
+        /// <summary>
+        /// If true, will launch the next level when closed.
+        /// </summary>
+        public bool Playing { get; set; }
+
+        public ScoreTable(Window parent, bool playing = true)
         {
+            Playing = playing;
+
             Size = new Vector(500, 300);
             Location = new Vector(200, 100);
             Visible = false;
@@ -38,13 +44,9 @@ namespace SI.Game
 
             closeButton.MouseClick += (pos) =>
                 {
-                    Camera.StopRotation();
-                    Camera.MoveTo(new DecimalVector(0m, 0m, 50m), 40);
-                    Camera.LookAt(new DecimalVector(0m, 0m, 0m), 40);
-
-                    Game.StartNextLevel();
-                    Visible = false; 
-                    closeButton.Visible = false;
+                    Visible = false;
+                    if (Playing)
+                        Game.StartNextLevel();
                 };
 
             parent.Children.Add(this);
@@ -65,7 +67,18 @@ namespace SI.Game
                     closeButton.Visible = value;
                 if (value)
                     Camera.RotateAround(new DecimalVector(0m, 0m, 0m));
+                else Hide();
             }
+        }
+        
+        /// <summary>
+        /// Hides the scores. You can also set Visible to false...
+        /// </summary>
+        private void Hide()
+        {
+            Camera.StopRotation();
+            Camera.MoveTo(new DecimalVector(0m, 0m, 50m), 40);
+            Camera.LookAt(new DecimalVector(0m, 0m, 0m), 40);
         }
 
         public override void Draw()

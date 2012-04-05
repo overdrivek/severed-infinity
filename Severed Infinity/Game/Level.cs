@@ -25,10 +25,13 @@ namespace SI.Game
         private Label scoreLabel, scoreText, missedText, missedLabel;
         private List<FlyingObject> flyingObjects;
         private Timer mainTimer = new Timer();
-        public GameWindow Parent;
+        public GameWindow Parent { get; set; }
         
         private void AnimationStep(object sender, EventArgs evArgs)
         {
+            if (Parent.State == Window.WindowState.InGameMenu)
+                return;
+
             currentTime++;
             if (currentTime % ShootInterval == 0)
                 for (int i = 0; i < shootQuant; ++ i)
@@ -154,12 +157,20 @@ namespace SI.Game
             HideInterface();
         }
         
-        public void FailLevel()
+        /// <summary>
+        /// Fails the current level.
+        /// </summary>
+        /// <param name="displayMessage">If true, displays a message with a restart option. Otherwise doesn't.</param>
+        public void FailLevel(bool displayMessage = true)
         {
+            HideInterface();
+
+            if (!displayMessage)
+                return;
+
             var info = new InfoBox(Parent, new Vector(200, 200), GameplayConstants.FailLevelMessage);
             info.ButtonText = "Restart";
             info.Show();
-            HideInterface();
 
             info.OKClicked += (pos) => Game.RestartLevel();
         }

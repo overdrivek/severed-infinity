@@ -12,7 +12,7 @@ using SIEngine.Other;
 using SIEngine.Physics;
 using SI.Game;
 using OpenTK;
-using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using Object = SIEngine.GUI.Object;
 
 namespace SI.Game
@@ -28,6 +28,7 @@ namespace SI.Game
     {
         private OBJModel modulator = new OBJModel("data/models/gun/gun.obj");
         private Laser mainLaser;
+        public new GameWindow Parent { get; set; }
 
         public Gun()
         {
@@ -40,7 +41,7 @@ namespace SI.Game
 
         public override void Draw()
         {
-            if (!Visible)
+            if (!Visible || Parent.State == Window.WindowState.InGameMenu)
                 return;
 
             GL.MatrixMode(MatrixMode.Modelview);

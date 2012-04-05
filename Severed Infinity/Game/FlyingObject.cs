@@ -22,6 +22,8 @@ namespace SI.Game
     /// </summary>
     public class FlyingObject : Object
     {
+        public new GameWindow Parent { get; set; }
+
         /// <summary>
         /// True for paused, false otherwise.
         /// </summary>
@@ -133,6 +135,9 @@ namespace SI.Game
 
         private void AnimationStep(object sedner, EventArgs evArgs)
         {
+            if (Parent.State == Window.WindowState.InGameMenu)
+                return;
+
             if (EnableMotionBlur)
             {
                 Vector temp = BlurStack.Last.Value;

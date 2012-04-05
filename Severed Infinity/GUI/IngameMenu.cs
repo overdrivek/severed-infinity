@@ -17,7 +17,7 @@ namespace SI.GUI
     public class IngameMenu : GUIObject
     {
         Button resume, quit, settings;
-        GameWindow Parent { get; set; }
+        new GameWindow Parent { get; set; }
 
         public IngameMenu(GameWindow parent)
         {
@@ -56,6 +56,7 @@ namespace SI.GUI
             quit.Visible = false;
             quit.MouseClick += (pos) =>
                 {
+                    Game.Game.QuitLevel();
                     Parent.Menu.RenderVisibility(true);
                     Hide();
                 };
