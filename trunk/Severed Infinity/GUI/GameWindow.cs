@@ -13,6 +13,7 @@ using SI.GUI;
 using SI.Properties;
 using SI.Other;
 using SIEngine.Logging;
+using SIEngine.Graphics;
 
 namespace SI
 {
@@ -22,6 +23,7 @@ namespace SI
         public IngameMenu GameMenu { get; set; }
         public WindowState State { get; set; }
         public bool MouseClicked { get; set; }
+        private Skybox skybox;
 
         public GameWindow()
         {
@@ -33,6 +35,9 @@ namespace SI
 
             Mouse.ButtonDown += (o, e) => MouseClicked = true;
             Mouse.ButtonUp += (o, e) => MouseClicked = false;
+
+            skybox = new Skybox();
+            Children3D.Add(skybox);
         }
 
         protected override void Draw()

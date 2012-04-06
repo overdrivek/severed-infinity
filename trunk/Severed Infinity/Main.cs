@@ -13,6 +13,7 @@ using SIEngine.BaseGeometry;
 using SIEngine.Physics;
 using System.Threading;
 using SI.Game;
+using SI.GUI;
 using SI.Properties;
 using Vector = SIEngine.BaseGeometry.Vector;
 using Button = SIEngine.GUI.Button;
@@ -21,15 +22,6 @@ using Label = SIEngine.GUI.Label;
 using Object = SIEngine.GUI.Object;
 using MainMenu = SI.GUI.MainMenu;
 using IngameMenu = SI.GUI.IngameMenu;
-
-//temp
-using SI.Game.Cutscenes;
-using SIEngine.Graphics.Shaders;
-using SIEngine.Graphics.ParticleEngines;
-using SIEngine.Input;
-using Key = OpenTK.Input.Key;
-using SIEngine.Graphics.Rendering;
-using SIEngine.Other;
 using SIEngine.Audio;
 
 namespace SI
@@ -38,6 +30,7 @@ namespace SI
     {
         static void Main(string[] Args)
         {
+
             //loads audio files
             GeneralAudio.LoadSound("data/audio/hmn.wav", "Include4eto - Hindered No More");
             GeneralAudio.LoadSound("data/audio/layla.wav", "Eric Clapton - Layla");
@@ -51,16 +44,24 @@ namespace SI
             GeneralAudio.LoadSound("data/audio/exp.wav", "8");
             BackgroundMusic.AddSongs("Include4eto - Hindered No More", "Eric Clapton - Layla");
 
-            if (Settings.Default.MusicStatus)
-                BackgroundMusic.StartPlayback();
-            
             var window = new GameWindow();
             window.BackgroundColor = Color.Wheat;
             Camera.Zoom = -50m;
             Camera.ControlMode = Camera.Mode.Smooth;
 
             BackgroundMusic.LinkToWindow(window);
-            window.Menu = new MainMenu(window);
+            //window.Menu = new MainMenu(window);
+
+            if (!Settings.Default.CredentialsVerified)
+            {
+                var betaVer = new BetaVerification(window);
+            }
+            else
+            {
+                window.Menu = new MainMenu(window);
+                if (Settings.Default.MusicStatus)
+                    BackgroundMusic.StartPlayback();
+            }
 
             if (Settings.Default.unlockStatus == null || Settings.Default.itemsShot == null)
                 Game.Game.DeleteProgress();

@@ -26,8 +26,6 @@ namespace SI.GUI
         public MainMenu(GameWindow window)
         {
             ParentWindow = window;
-            skybox = new Skybox();
-            ParentWindow.Children3D.Add(skybox);
             playGameMenu = new PlayGameMenu(this);
 
             play = new Button();
