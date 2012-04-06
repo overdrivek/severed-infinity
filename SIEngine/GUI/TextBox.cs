@@ -17,12 +17,9 @@ namespace SIEngine
             public string Text { get; set; }
             public Font TextFont { get; set; }
             public int CharacterLimit { get; set; }
-            //private TextPrinter printer;
             
             public TextBox ()
             {
-                //printer = new TextPrinter(TextQuality.Default);
-                //this.TextFont = new Font("Comic", 14, FontStyle.Bold, GraphicsUnit.Pixel);
                 this.Text = "";
                 CharacterLimit = 20;
                 Size = new Vector(150, 20);
@@ -41,6 +38,10 @@ namespace SIEngine
                             break;
                         this.Text = this.Text.Remove(this.Text.Length - 1);
                         break;
+                    case Key.KeypadMinus:
+                    case Key.Minus:
+                        this.Text += "-";
+                        break;
                 }
                 if (string.Compare(key.ToString().Remove(key.ToString().Length - 1), "Number") == 0)
                 {
@@ -52,8 +53,9 @@ namespace SIEngine
                 if (key.ToString().Length > 1)
                     return;
 
+                bool capitalLetters = Parent.Keyboard[Key.LShift] || Parent.Keyboard[Key.RShift];
                 if (Text.Length + 1 <= CharacterLimit)
-                    this.Text += key.ToString().ToLower();
+                    this.Text += capitalLetters ? key.ToString() : key.ToString().ToLower();
             }
 
             public override void Draw()

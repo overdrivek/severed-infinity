@@ -32,14 +32,24 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Compile Include="bin\Debug\data\effects\Effects\ButtonWobbleEffect.cs" />
     <Compile Include="Game\Cutscenes\IntroScene.cs" />
@@ -52,6 +62,7 @@
     <Compile Include="Game\ObjectShooter.cs" />
     <Compile Include="Game\ScoreTable.cs" />
     <Compile Include="Game\Tutorial.cs" />
+    <Compile Include="GUI\BetaVerification.cs" />
     <Compile Include="GUI\Credits.cs" />
     <Compile Include="GUI\GameWindow.cs" />
     <Compile Include="GUI\IngameMenu.cs" />
@@ -60,6 +71,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="GUI\MainMenu.cs" />
     <Compile Include="Other\GameplayConstants.cs" />
+    <Compile Include="Other\OpenBetaFunctions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
