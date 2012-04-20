@@ -39,12 +39,7 @@ namespace SI
             skybox = new Skybox();
             Children3D.Add(skybox);
         }
-
-        protected override void Draw()
-        {
-
-        }
-
+        
         protected override void OnKeyPress(KeyPressEventArgs e)
         {
             base.OnKeyPress(e);
