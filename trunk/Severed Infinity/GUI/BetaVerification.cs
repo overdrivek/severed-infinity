@@ -75,8 +75,6 @@ namespace SI.GUI
             Parent = parent;
 
             Parent.AddChildren(nameLabel, nameBox, mainLabel, keyLabel, keyBox, verifyButton, wrongKeyMessage);
-
-            Console.WriteLine(nameBox.Size.X);
         }
     }
 }

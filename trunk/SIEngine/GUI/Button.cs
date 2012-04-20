@@ -89,6 +89,9 @@ namespace SIEngine
                 if (this.Location == null || this.Size == null)
                     return;
 
+                if (ButtonEffect.OverShadow)
+                    GeneralGraphics.BlendWhite();
+
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.PushMatrix();
                 {
@@ -97,7 +100,6 @@ namespace SIEngine
                     if (this.TextureImage != null)
                         this.TextureImage.SelectTexture();
                     else GL.Disable(EnableCap.Texture2D);
-                    GeneralGraphics.BlendWhite();
 
                     GL.Begin(BeginMode.Quads);
                     {

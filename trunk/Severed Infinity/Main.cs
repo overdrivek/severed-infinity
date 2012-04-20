@@ -52,11 +52,11 @@ namespace SI
             BackgroundMusic.LinkToWindow(window);
             //window.Menu = new MainMenu(window);
 
-            if (!Settings.Default.CredentialsVerified)
-            {
-                var betaVer = new BetaVerification(window);
-            }
-            else
+            //if (!Settings.Default.CredentialsVerified)
+            //{
+                //var betaVer = new BetaVerification(window);
+            //}
+            //else
             {
                 window.Menu = new MainMenu(window);
                 if (Settings.Default.MusicStatus)

@@ -15,7 +15,7 @@ namespace SIEngine
 {
     namespace GUI
     {
-        public abstract class Window : GameWindow
+        public class Window : GameWindow
         {
             public Color BackgroundColor
             {
@@ -180,7 +180,10 @@ namespace SIEngine
                 SwapBuffers();
             }
 
-            protected abstract void Draw();
+            protected virtual void Draw()
+            {
+
+            }
 
         }
     }
